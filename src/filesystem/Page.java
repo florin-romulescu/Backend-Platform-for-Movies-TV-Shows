@@ -2,13 +2,13 @@ package filesystem;
 
 import java.util.ArrayList;
 
-public class Page {
+public final class Page {
 
     private final String name;
     private ArrayList<Page> children = new ArrayList<>();
     private ArrayList<String> permissions = new ArrayList<>();
 
-    public Page(String name) {
+    public Page(final String name) {
         this.name = name;
     }
 
@@ -16,7 +16,7 @@ public class Page {
         return children;
     }
 
-    public void setChildren(ArrayList<Page> children) {
+    public void setChildren(final ArrayList<Page> children) {
         this.children = children;
     }
 
@@ -24,7 +24,7 @@ public class Page {
         return permissions;
     }
 
-    public void setPermissions(ArrayList<String> permissions) {
+    public void setPermissions(final ArrayList<String> permissions) {
         this.permissions = permissions;
     }
 
@@ -32,7 +32,12 @@ public class Page {
         return name;
     }
 
-    public boolean permissionExists(String p) {
+    /**
+     * Verify if this page has the given permission.
+     * @param p the given permission
+     * @return true if the page has the permission else false
+     */
+    public boolean permissionExists(final String p) {
         for (String permission: permissions) {
             if (permission.equals(p)) {
                 return true;
@@ -41,19 +46,4 @@ public class Page {
         return false;
     }
 
-    public boolean pageExists(String title) {
-        for (Page page: children) {
-            if (page.name.equals(title))
-                return true;
-        }
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        return "Page{" +
-                "name=" + name +
-                ", permissions=" + permissions +
-                '}';
-    }
 }

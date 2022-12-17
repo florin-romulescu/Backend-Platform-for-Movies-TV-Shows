@@ -1,15 +1,15 @@
 package fileio;
 
-public class ActionInput {
-    String type;
-    String page;
-    String feature;
-    CredentialsInput credentials;
-    String movie;
-    String startsWith;
-    String count;
-    Integer rate;
-    FilterInput filters;
+public final class ActionInput {
+    private String type;
+    private String page;
+    private String feature;
+    private CredentialsInput credentials;
+    private String movie;
+    private String startsWith;
+    private String count;
+    private Integer rate;
+    private FilterInput filters;
 
     public ActionInput() {
     }
@@ -18,7 +18,7 @@ public class ActionInput {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -26,7 +26,7 @@ public class ActionInput {
         return page;
     }
 
-    public void setPage(String page) {
+    public void setPage(final String page) {
         this.page = page;
     }
 
@@ -34,7 +34,7 @@ public class ActionInput {
         return movie;
     }
 
-    public void setMovieTitle(String movie) {
+    public void setMovieTitle(final String movie) {
         this.movie = movie;
     }
 
@@ -42,7 +42,7 @@ public class ActionInput {
         return feature;
     }
 
-    public void setFeature(String feature) {
+    public void setFeature(final String feature) {
         this.feature = feature;
     }
 
@@ -50,7 +50,7 @@ public class ActionInput {
         return credentials;
     }
 
-    public void setCredentials(CredentialsInput credentials) {
+    public void setCredentials(final CredentialsInput credentials) {
         this.credentials = credentials;
     }
 
@@ -58,7 +58,7 @@ public class ActionInput {
         return startsWith;
     }
 
-    public void setStartsWith(String startsWith) {
+    public void setStartsWith(final String startsWith) {
         this.startsWith = startsWith;
     }
 
@@ -66,7 +66,7 @@ public class ActionInput {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(final String count) {
         this.count = count;
     }
 
@@ -74,7 +74,7 @@ public class ActionInput {
         return rate;
     }
 
-    public void setRate(Integer rate) {
+    public void setRate(final Integer rate) {
         this.rate = rate;
     }
 
@@ -82,21 +82,7 @@ public class ActionInput {
         return filters;
     }
 
-    public void setFilters(FilterInput filters) {
+    public void setFilters(final FilterInput filters) {
         this.filters = filters;
-    }
-
-    @Override
-    public String toString() {
-        return "ActionInput{" +
-                "command='" + type + '\'' +
-                ", page='" + page + '\'' +
-                ", movieTitle='" + movie + '\'' +
-                ", feature='" + feature + '\'' +
-                ", credentials=" + credentials +
-                ", startsWith='" + startsWith + '\'' +
-                ", count='" + count + '\'' +
-                ", rate=" + rate +
-                '}';
     }
 }

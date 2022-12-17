@@ -5,14 +5,18 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.Objects;
 
-public class CredentialsInput {
-    String name;
-    String password;
-    String accountType;
-    String country;
-    String balance;
+public final class CredentialsInput {
+    private String name;
+    private String password;
+    private String accountType;
+    private String country;
+    private String balance;
 
-    public CredentialsInput(String name, String password, String accountType, String country, String balance) {
+    public CredentialsInput(final String name,
+                            final String password,
+                            final String accountType,
+                            final String country,
+                            final String balance) {
         this.name = name;
         this.password = password;
         this.accountType = accountType;
@@ -27,7 +31,7 @@ public class CredentialsInput {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -35,7 +39,7 @@ public class CredentialsInput {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -43,7 +47,7 @@ public class CredentialsInput {
         return accountType;
     }
 
-    public void setAccountType(String accountType) {
+    public void setAccountType(final String accountType) {
         this.accountType = accountType;
     }
 
@@ -51,7 +55,7 @@ public class CredentialsInput {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         this.country = country;
     }
 
@@ -59,10 +63,14 @@ public class CredentialsInput {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(final String balance) {
         this.balance = balance;
     }
 
+    /**
+     * Converts this object into an object node for output purposes.
+     * @return an ObjectNode object with this object data
+     */
     public ObjectNode convertToObjectNode() {
         ObjectNode obj = new ObjectMapper().createObjectNode();
         obj.put("name", name);
@@ -74,22 +82,19 @@ public class CredentialsInput {
     }
 
     @Override
-    public String toString() {
-        return "CredentialsInput{" +
-                "name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", accountType='" + accountType + '\'' +
-                ", country='" + country + '\'' +
-                ", balance='" + balance + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         CredentialsInput that = (CredentialsInput) o;
-        return Objects.equals(name, that.name) && Objects.equals(password, that.password) && Objects.equals(accountType, that.accountType) && Objects.equals(country, that.country) && Objects.equals(balance, that.balance);
+        return Objects.equals(name, that.name)
+                && Objects.equals(password, that.password)
+                && Objects.equals(accountType, that.accountType)
+                && Objects.equals(country, that.country)
+                && Objects.equals(balance, that.balance);
     }
 
     @Override

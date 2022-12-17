@@ -17,7 +17,7 @@ abstract class OutTest {
 
 class StandardOutput extends OutTest {
 
-    public StandardOutput(String error) {
+    StandardOutput(final String error) {
         super.error = error;
     }
 
@@ -35,7 +35,7 @@ class StandardOutput extends OutTest {
 
 class UserLoggedInOutput extends OutTest {
 
-    public UserLoggedInOutput(String error, UserInput user) {
+    UserLoggedInOutput(final String error, final UserInput user) {
         super.error = error;
         super.currentUser = user;
     }
@@ -58,7 +58,9 @@ class UserLoggedInOutput extends OutTest {
 
 class MoviesOutput extends OutTest {
 
-    public MoviesOutput(String error, List<MovieInput> currentMovieList, UserInput currentUser) {
+    MoviesOutput(final String error,
+                 final List<MovieInput> currentMovieList,
+                 final UserInput currentUser) {
         super.error = error;
         super.currentUser = currentUser;
         super.currentMovieList = currentMovieList;
@@ -70,7 +72,7 @@ class MoviesOutput extends OutTest {
         obj.put("error", error);
         ArrayNode arr = new ObjectMapper().createArrayNode();
 
-        for(MovieInput movie: currentMovieList) {
+        for (MovieInput movie: currentMovieList) {
             arr.add(movie.convertToObjectNode());
         }
         obj.put("currentMoviesList", arr);
@@ -88,12 +90,24 @@ public class OutputFactory {
         StandardOutput, UserLoggedInOutput, MoviesOutput
     }
 
-    public static ObjectNode createOutput(OutputType type, String error, List<MovieInput> currentMovieList, UserInput currentUser) {
-        switch (type) {
-            case StandardOutput : return new StandardOutput(error).convertToObjectNode();
-            case UserLoggedInOutput: return new UserLoggedInOutput(error, currentUser).convertToObjectNode();
-            case MoviesOutput: return new MoviesOutput(error, currentMovieList, currentUser).convertToObjectNode();
-        }
-        throw new IllegalArgumentException("The output type" + type + "is not recognized");
+    /**
+     * Creates a specific output based on its type.
+     * @param type the type of the output
+     * @param error error message
+     * @param currentMovieList the current movies that the user can watch
+     * @param currentUser the current user
+     * @return and ObjectNode object for output purposes
+     */
+    public static ObjectNode createOutput(final OutputType type,
+                                          final String error,
+                                          final List<MovieInput> currentMovieList,
+                                          final UserInput currentUser) {
+        return switch (type) {
+            case StandardOutput -> new StandardOutput(error).convertToObjectNode();
+            case UserLoggedInOutput ->
+                    new UserLoggedInOutput(error, currentUser).convertToObjectNode();
+            case MoviesOutput ->
+                    new MoviesOutput(error, currentMovieList, currentUser).convertToObjectNode();
+        };
     }
 }

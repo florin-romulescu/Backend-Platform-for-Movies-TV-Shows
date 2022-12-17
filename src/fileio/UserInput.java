@@ -8,16 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class UserInput {
-    CredentialsInput credentials;
-    Integer tokensCount = 0;
-    Integer numFreePremiumMovies = 15;
-    List<MovieInput> purchasedMovies = new ArrayList<>();
-    List<MovieInput> watchedMovies = new ArrayList<>();
-    List<MovieInput> likedMovies = new ArrayList<>();
-    List<MovieInput> ratedMovies = new ArrayList<>();
+public final class UserInput {
+    private static final int NUM_FREE_PREM_MOVIES = 15;
+    private CredentialsInput credentials;
+    private Integer tokensCount = 0;
+    private Integer numFreePremiumMovies = NUM_FREE_PREM_MOVIES;
+    private List<MovieInput> purchasedMovies = new ArrayList<>();
+    private List<MovieInput> watchedMovies = new ArrayList<>();
+    private List<MovieInput> likedMovies = new ArrayList<>();
+    private List<MovieInput> ratedMovies = new ArrayList<>();
 
-    public UserInput(CredentialsInput credentials) {
+    public UserInput(final CredentialsInput credentials) {
         this.credentials = credentials;
     }
 
@@ -28,7 +29,7 @@ public class UserInput {
         return credentials;
     }
 
-    public void setCredentials(CredentialsInput credentials) {
+    public void setCredentials(final CredentialsInput credentials) {
         this.credentials = credentials;
     }
 
@@ -36,7 +37,7 @@ public class UserInput {
         return tokensCount;
     }
 
-    public void setTokensCount(Integer tokensCount) {
+    public void setTokensCount(final Integer tokensCount) {
         this.tokensCount = tokensCount;
     }
 
@@ -44,7 +45,7 @@ public class UserInput {
         return numFreePremiumMovies;
     }
 
-    public void setNumFreePremiumMovies(Integer numFreePremiumMovies) {
+    public void setNumFreePremiumMovies(final Integer numFreePremiumMovies) {
         this.numFreePremiumMovies = numFreePremiumMovies;
     }
 
@@ -52,7 +53,7 @@ public class UserInput {
         return purchasedMovies;
     }
 
-    public void setPurchasedMovies(List<MovieInput> purchasedMovies) {
+    public void setPurchasedMovies(final List<MovieInput> purchasedMovies) {
         this.purchasedMovies = purchasedMovies;
     }
 
@@ -60,7 +61,7 @@ public class UserInput {
         return watchedMovies;
     }
 
-    public void setWatchedMovies(List<MovieInput> watchedMovies) {
+    public void setWatchedMovies(final List<MovieInput> watchedMovies) {
         this.watchedMovies = watchedMovies;
     }
 
@@ -68,7 +69,7 @@ public class UserInput {
         return likedMovies;
     }
 
-    public void setLikedMovies(List<MovieInput> likedMovies) {
+    public void setLikedMovies(final List<MovieInput> likedMovies) {
         this.likedMovies = likedMovies;
     }
 
@@ -76,18 +77,28 @@ public class UserInput {
         return ratedMovies;
     }
 
-    public void setRatedMovies(List<MovieInput> ratedMovies) {
+    public void setRatedMovies(final List<MovieInput> ratedMovies) {
         this.ratedMovies = ratedMovies;
     }
 
-    public boolean exists(String name, String password) {
-        return credentials.name.equals(name) && credentials.password.equals(password);
+    /**
+     * Verify if this user has the given credentials
+     * @param name name of the user
+     * @param password password of the user
+     * @return true if the parameters coincide else false
+     */
+    public boolean exists(final String name, final String password) {
+        return credentials.getName().equals(name) && credentials.getPassword().equals(password);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         UserInput userInput = (UserInput) o;
         return Objects.equals(credentials, userInput.credentials);
     }
@@ -97,6 +108,10 @@ public class UserInput {
         return Objects.hash(credentials);
     }
 
+    /**
+     * Converts this object into an object node for output purposes.
+     * @return an ObjectNode object with this object data
+     */
     public ObjectNode convertToObjectNode() {
         ObjectNode obj = new ObjectMapper().createObjectNode();
         obj.put("credentials", credentials.convertToObjectNode());
@@ -127,13 +142,6 @@ public class UserInput {
         obj.put("ratedMovies", arr);
 
         return obj;
-    }
-
-    @Override
-    public String toString() {
-        return "UserInput{" +
-                "credentials=" + credentials +
-                '}';
     }
 
 }

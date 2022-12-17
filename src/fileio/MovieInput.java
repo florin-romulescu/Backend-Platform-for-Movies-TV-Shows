@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MovieInput {
+public final class MovieInput {
     private String name;
     private String year;
     private Integer duration;
@@ -21,7 +21,12 @@ public class MovieInput {
     private Integer numRatings = 0;
 
 
-    public MovieInput(String name, String year, Integer duration, ArrayList<String> genres, ArrayList<String> actors, ArrayList<String> countriesBanned) {
+    public MovieInput(final String name,
+                      final String year,
+                      final Integer duration,
+                      final ArrayList<String> genres,
+                      final ArrayList<String> actors,
+                      final ArrayList<String> countriesBanned) {
         this.name = name;
         this.year = year;
         this.duration = duration;
@@ -37,7 +42,7 @@ public class MovieInput {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -45,7 +50,7 @@ public class MovieInput {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(final String year) {
         this.year = year;
     }
 
@@ -53,7 +58,7 @@ public class MovieInput {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(final Integer duration) {
         this.duration = duration;
     }
 
@@ -61,7 +66,7 @@ public class MovieInput {
         return genres;
     }
 
-    public void setGenres(ArrayList<String> genres) {
+    public void setGenres(final ArrayList<String> genres) {
         this.genres = genres;
     }
 
@@ -69,7 +74,7 @@ public class MovieInput {
         return actors;
     }
 
-    public void setActors(ArrayList<String> actors) {
+    public void setActors(final ArrayList<String> actors) {
         this.actors = actors;
     }
 
@@ -77,7 +82,7 @@ public class MovieInput {
         return countriesBanned;
     }
 
-    public void setCountriesBanned(ArrayList<String> countriesBanned) {
+    public void setCountriesBanned(final ArrayList<String> countriesBanned) {
         this.countriesBanned = countriesBanned;
     }
 
@@ -85,7 +90,7 @@ public class MovieInput {
         return numLikes;
     }
 
-    public void setNumLikes(Integer numLikes) {
+    public void setNumLikes(final Integer numLikes) {
         this.numLikes = numLikes;
     }
 
@@ -93,7 +98,7 @@ public class MovieInput {
         return rating;
     }
 
-    public void setRating(Double rating) {
+    public void setRating(final Double rating) {
         this.rating = rating;
     }
 
@@ -101,7 +106,7 @@ public class MovieInput {
         return numRatings;
     }
 
-    public void setNumRatings(Integer numRatings) {
+    public void setNumRatings(final Integer numRatings) {
         this.numRatings = numRatings;
     }
 
@@ -109,11 +114,21 @@ public class MovieInput {
         return ratings;
     }
 
-    public void setRatings(List<Double> ratings) {
+    public void setRatings(final List<Double> ratings) {
         this.ratings = ratings;
     }
 
-    public static List<MovieInput> getUserMovies(UserInput user, List<MovieInput> moviesList) {
+    /**
+     * Generates a list with all the movies that this user can watch.
+     * @param user the given user
+     * @param moviesList a list with multiple movies
+     * @return the movies that the user can watch based on its country
+     */
+    public static List<MovieInput> getUserMovies(final UserInput user,
+                                                 final List<MovieInput> moviesList) {
+        if (user == null) {
+            return new ArrayList<>();
+        }
         List<MovieInput> allowedMovies = new ArrayList<>();
 
         for (MovieInput movie: moviesList) {
@@ -162,23 +177,16 @@ public class MovieInput {
     }
 
     @Override
-    public String toString() {
-        return "MovieInput{" +
-                "name='" + name + '\'' +
-                ", year='" + year + '\'' +
-                ", duration=" + duration +
-                ", genres=" + genres +
-                ", actors=" + actors +
-                ", countriesBanned=" + countriesBanned +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         MovieInput that = (MovieInput) o;
-        return Objects.equals(name, that.name) && Objects.equals(year, that.year);
+        return Objects.equals(name, that.name)
+                && Objects.equals(year, that.year);
     }
 
     @Override

@@ -7,15 +7,15 @@ import fileio.UserInput;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileSystem {
+public final class FileSystem {
     private FileSystem() {
         // -------------------------------- //
 
        unAuthPage = new Page("homepage neautentificat");
        Page unAuthLoginPage = new Page("login");
-       unAuthLoginPage.getPermissions().add(FSConstants.loginPermission);
+       unAuthLoginPage.getPermissions().add(FSConstants.LOGIN_PERMISSION);
        Page unAuthRegisterPage = new Page("register");
-       unAuthRegisterPage.getPermissions().add(FSConstants.registerPermission);
+       unAuthRegisterPage.getPermissions().add(FSConstants.REGISTER_PERMISSION);
        unAuthPage.getChildren().add(unAuthLoginPage);
        unAuthPage.getChildren().add(unAuthRegisterPage);
 
@@ -35,25 +35,25 @@ public class FileSystem {
         authMoviesPage.getChildren().add(authMoviesSeeDetails);
         authMoviesPage.getChildren().add(authLogout);
         authMoviesPage.getChildren().add(authMoviesPage);
-        authMoviesPage.getPermissions().add(FSConstants.searchPermission);
-        authMoviesPage.getPermissions().add(FSConstants.filterPermission);
+        authMoviesPage.getPermissions().add(FSConstants.SEARCH_PERMISSION);
+        authMoviesPage.getPermissions().add(FSConstants.FILTER_PERMISSION);
 
         authMoviesSeeDetails.getChildren().add(authPage);
         authMoviesSeeDetails.getChildren().add(authMoviesPage);
         authMoviesSeeDetails.getChildren().add(authUpgradesPage);
         authMoviesSeeDetails.getChildren().add(authLogout);
         authMoviesSeeDetails.getChildren().add(authMoviesSeeDetails);
-        authMoviesSeeDetails.getPermissions().add(FSConstants.purchasePermission);
-        authMoviesSeeDetails.getPermissions().add(FSConstants.watchPermission);
-        authMoviesSeeDetails.getPermissions().add(FSConstants.likePermission);
-        authMoviesSeeDetails.getPermissions().add(FSConstants.ratePermission);
+        authMoviesSeeDetails.getPermissions().add(FSConstants.PURCHASE_PERMISSION);
+        authMoviesSeeDetails.getPermissions().add(FSConstants.WATCH_PERMISSION);
+        authMoviesSeeDetails.getPermissions().add(FSConstants.LIKE_PERMISSION);
+        authMoviesSeeDetails.getPermissions().add(FSConstants.RATE_PERMISSION);
 
         authUpgradesPage.getChildren().add(authPage);
         authUpgradesPage.getChildren().add(authMoviesPage);
         authUpgradesPage.getChildren().add(authLogout);
         authUpgradesPage.getChildren().add(authUpgradesPage);
-        authUpgradesPage.getPermissions().add(FSConstants.premiumPermission);
-        authUpgradesPage.getPermissions().add(FSConstants.tokensPermission);
+        authUpgradesPage.getPermissions().add(FSConstants.PREMIUM_PERMISSION);
+        authUpgradesPage.getPermissions().add(FSConstants.TOKENS_PERMISSION);
 
 //        authLogout.getChildren().add(unAuthPage);
         // -------------------------------- //
@@ -69,6 +69,10 @@ public class FileSystem {
     private  List<MovieInput> allMovies = null;
     private boolean visited = false;
 
+    /**
+     * Singleton pattern initialisation.
+     * @return the instance of this class
+     */
     public static FileSystem getInstance() {
         if (instance == null) {
             instance = new FileSystem();
@@ -80,7 +84,7 @@ public class FileSystem {
         return current;
     }
 
-    public void setCurrent(Page current) {
+    public void setCurrent(final Page current) {
         this.current = current;
     }
 
@@ -96,7 +100,7 @@ public class FileSystem {
         return currentUser;
     }
 
-    public void setCurrentUser(UserInput currentUser) {
+    public void setCurrentUser(final UserInput currentUser) {
         this.currentUser = currentUser;
     }
 
@@ -104,7 +108,7 @@ public class FileSystem {
         return currentMovies;
     }
 
-    public void setCurrentMovies(List<MovieInput> currentMovies) {
+    public void setCurrentMovies(final List<MovieInput> currentMovies) {
         this.currentMovies = currentMovies;
     }
 
@@ -112,7 +116,7 @@ public class FileSystem {
         return currentMovie;
     }
 
-    public void setCurrentMovie(MovieInput currentMovie) {
+    public void setCurrentMovie(final MovieInput currentMovie) {
         this.currentMovie = currentMovie;
     }
 
@@ -120,12 +124,17 @@ public class FileSystem {
         return allMovies;
     }
 
-    public void setAllMovies(List<MovieInput> allMovies) {
+    public void setAllMovies(final List<MovieInput> allMovies) {
         this.allMovies = allMovies;
     }
 
-    public Boolean initCurrentMovies(ActionInput action) {
-        if (!current.getName().equals(FSConstants.seeDetailsPage)) {
+    /**
+     * Init the current movies with all the movies that the current
+     * user can watch based on its country.
+     * @param action the current action
+     */
+    public void initCurrentMovies(final ActionInput action) {
+        if (!current.getName().equals(FSConstants.SEE_DETAILS_PAGE)) {
             currentMovies = new ArrayList<>();
         }
 
@@ -136,7 +145,7 @@ public class FileSystem {
             visited = false;
         }
 
-        if (current.getName().equals(FSConstants.seeDetailsPage)) {
+        if (current.getName().equals(FSConstants.SEE_DETAILS_PAGE)) {
             if (action.getMovie() != null) {
                 for (MovieInput movie : currentMovies) {
                     if (movie.getName().equals(action.getMovie())) {
@@ -152,9 +161,11 @@ public class FileSystem {
         } else {
             currentMovie = null;
         }
-        return true;
     }
 
+    /**
+     * Set the instance null for reinitialisation.
+     */
     public static void init() {
         instance = null;
     }

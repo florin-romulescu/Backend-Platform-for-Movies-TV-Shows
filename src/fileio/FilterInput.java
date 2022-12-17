@@ -1,6 +1,6 @@
 package fileio;
 
-public class FilterInput {
+public final class FilterInput {
     private SortInput sort;
     private ContainInput contains;
 
@@ -11,7 +11,7 @@ public class FilterInput {
         return sort;
     }
 
-    public void setSort(SortInput sort) {
+    public void setSort(final SortInput sort) {
         this.sort = sort;
     }
 
@@ -19,15 +19,8 @@ public class FilterInput {
         return contains;
     }
 
-    public void setContains(ContainInput contains) {
+    public void setContains(final ContainInput contains) {
         this.contains = contains;
     }
 
-    @Override
-    public String toString() {
-        return "FilterInput{" +
-                "sort=" + sort +
-                ", contains=" + contains +
-                '}';
-    }
 }

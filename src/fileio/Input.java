@@ -2,10 +2,10 @@ package fileio;
 
 import java.util.ArrayList;
 
-public class Input {
-    ArrayList<UserInput> users;
-    ArrayList<MovieInput> movies;
-    ArrayList<ActionInput> actions;
+public final class Input {
+    private ArrayList<UserInput> users;
+    private ArrayList<MovieInput> movies;
+    private ArrayList<ActionInput> actions;
 
     public Input() {
     }
@@ -14,7 +14,7 @@ public class Input {
         return users;
     }
 
-    public void setUsers(ArrayList<UserInput> users) {
+    public void setUsers(final ArrayList<UserInput> users) {
         this.users = users;
     }
 
@@ -22,7 +22,7 @@ public class Input {
         return movies;
     }
 
-    public void setMovies(ArrayList<MovieInput> movies) {
+    public void setMovies(final ArrayList<MovieInput> movies) {
         this.movies = movies;
     }
 
@@ -30,16 +30,16 @@ public class Input {
         return actions;
     }
 
-    public void setActions(ArrayList<ActionInput> actions) {
+    public void setActions(final ArrayList<ActionInput> actions) {
         this.actions = actions;
     }
 
     @Override
     public String toString() {
-        return "Input{" +
-                "users=" + users +
-                ", movies=" + movies +
-                ", actions=" + actions +
-                '}';
+        return "Input{"
+                 + "users=" + users
+                 + ", movies=" + movies
+                 + ", actions=" + actions
+                 + '}';
     }
 }

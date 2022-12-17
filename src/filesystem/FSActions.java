@@ -1,16 +1,15 @@
 package filesystem;
 
 import fileio.ActionInput;
-import fileio.MovieComparator;
+
 import fileio.MovieInput;
 import fileio.UserInput;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-public class FSActions {
+public final class FSActions {
     private FSActions() {
 
     }
@@ -20,18 +19,18 @@ public class FSActions {
      * @param action the given action
      * @return true if operation was successful else false
      */
-    public static Boolean changePage(ActionInput action) {
+    public static Boolean changePage(final ActionInput action) {
         FileSystem instance = FileSystem.getInstance();
         Page current = instance.getCurrent();
 
         String pageTitle = action.getPage();
         for (Page page: current.getChildren()) {
             if (page.getName().equals(pageTitle)) {
-                if (pageTitle.equals(FSConstants.logoutPage)) {
+                if (pageTitle.equals(FSConstants.LOGOUT_PAGE)) {
                     instance.setCurrent(instance.getUnAuthPage());
                     instance.setCurrentUser(null);
                     return true;
-                } else if (pageTitle.equals(FSConstants.seeDetailsPage)) {
+                } else if (pageTitle.equals(FSConstants.SEE_DETAILS_PAGE)) {
                     boolean found = false;
                     for (MovieInput movie: instance.getCurrentMovies()) {
                         if (movie.getName().equals(action.getMovie())) {
@@ -56,19 +55,21 @@ public class FSActions {
      * @param action the given action
      * @return true if the operation was successful else false
      */
-    public static Boolean login(List<UserInput> users, ActionInput action) {
+    public static Boolean login(final List<UserInput> users,
+                                final ActionInput action) {
         FileSystem instance = FileSystem.getInstance();
         Page current = instance.getCurrent();
 
-        if (!current.permissionExists(FSConstants.loginPermission)) {
+        if (!current.permissionExists(FSConstants.LOGIN_PERMISSION)) {
             return false;
         }
-        if (!action.getFeature().equals(FSConstants.loginPermission)) {
+        if (!action.getFeature().equals(FSConstants.LOGIN_PERMISSION)) {
             return false;
         }
 
         for (UserInput user: users) {
-            if (user.exists(action.getCredentials().getName(), action.getCredentials().getPassword())) {
+            if (user.exists(action.getCredentials().getName(),
+                    action.getCredentials().getPassword())) {
                 instance.setCurrent(instance.getAuthPage());
                 instance.setCurrentUser(user);
                 return true;
@@ -84,21 +85,23 @@ public class FSActions {
      * @param action the given action
      * @return true if the operation was successful else false
      */
-    public static Boolean register(List<UserInput> users, ActionInput action) {
+    public static Boolean register(final List<UserInput> users,
+                                   final ActionInput action) {
         FileSystem instance = FileSystem.getInstance();
         Page current = instance.getCurrent();
 
-        if (!current.permissionExists(FSConstants.registerPermission)) {
+        if (!current.permissionExists(FSConstants.REGISTER_PERMISSION)) {
             return false;
         }
-        if (!action.getFeature().equals(FSConstants.registerPermission)) {
+        if (!action.getFeature().equals(FSConstants.REGISTER_PERMISSION)) {
             instance.setCurrent(instance.getUnAuthPage());
             return false;
         }
 
         for (UserInput user: users) {
             if (user.getCredentials().getName().equals(action.getCredentials().getName())
-                && user.getCredentials().getPassword().equals(action.getCredentials().getPassword())) {
+                && user.getCredentials().getPassword()
+                    .equals(action.getCredentials().getPassword())) {
                 return false;
             }
         }
@@ -119,12 +122,14 @@ public class FSActions {
      * @param action the current action
      * @return true if the operation was successful else false
      */
-    public static Boolean search(List<MovieInput> movies, List<MovieInput> currentMovies, ActionInput action) {
+    public static Boolean search(final List<MovieInput> movies,
+                                 final List<MovieInput> currentMovies,
+                                 final ActionInput action) {
         FileSystem instance = FileSystem.getInstance();
         Page current = instance.getCurrent();
         movies.clear();
 
-        if (!current.getName().equals("movies")) {
+        if (!current.getName().equals(FSConstants.MOVIES_PAGE)) {
             return false;
         }
 
@@ -137,11 +142,20 @@ public class FSActions {
         return true;
     }
 
-    public static Boolean filter(List<MovieInput> movies, List<MovieInput> currentMovies, ActionInput action) {
+    /**
+     * Filter the list of movies based on actors, genre, rate and duration.
+     * @param movies the final result
+     * @param currentMovies the input list
+     * @param action the current action
+     * @return true if the operation was successful else false
+     */
+    public static Boolean filter(final List<MovieInput> movies,
+                                 final List<MovieInput> currentMovies,
+                                 final ActionInput action) {
         FileSystem instance = FileSystem.getInstance();
         Page current = instance.getCurrent();
 
-        if (!current.getName().equals("movies")) {
+        if (!current.getName().equals(FSConstants.MOVIES_PAGE)) {
             return false;
         }
 
@@ -151,12 +165,14 @@ public class FSActions {
             for (MovieInput movie: currentMovies) {
                 boolean add = true;
                 if (action.getFilters().getContains().getGenre() != null) {
-                    if (!movie.getGenres().containsAll(action.getFilters().getContains().getGenre())) {
+                    if (!movie.getGenres().containsAll(
+                            action.getFilters().getContains().getGenre())) {
                         add = false;
                     }
                 }
                 if (action.getFilters().getContains().getActors() != null) {
-                    if (!movie.getActors().containsAll(action.getFilters().getContains().getActors())) {
+                    if (!movie.getActors().containsAll(
+                            action.getFilters().getContains().getActors())) {
                         add = false;
                     }
                 }
@@ -168,27 +184,10 @@ public class FSActions {
             movies.addAll(currentMovies);
         }
 
-//        if (action.getFilters().getSort() != null) {
-//            if (action.getFilters().getSort().getDuration() != null) {
-//                if (action.getFilters().getSort().getDuration().equals("increasing")) {
-//                    movies.sort((o1, o2)-> new MovieComparator().compare(o1, o2));
-//                } else {
-//                    movies.sort((o1,o2)-> new MovieComparator().compare(o2, o1));
-//                }
-//            }
-//            if (action.getFilters().getSort().getRating() != null) {
-//                if (action.getFilters().getSort().getRating().equals("increasing")) {
-//                    movies.sort((o1, o2)-> new MovieComparator().compare(o1, o2));
-//                } else {
-//                    movies.sort((o1,o2)-> new MovieComparator().compare(o2, o1));
-//                }
-//            }
-//        }
-
         if (action.getFilters().getSort() != null) {
             if (action.getFilters().getSort().getDuration() != null) {
                 for (int i = 0; i < movies.size() - 1; ++i) {
-                    for (int j = i+1; j < movies.size(); ++j) {
+                    for (int j = i + 1; j < movies.size(); ++j) {
                         if (action.getFilters().getSort().getDuration().equals("increasing")) {
                             if (movies.get(i).getDuration() > movies.get(j).getDuration()) { // greater
                                 Collections.swap(movies, i, j);
@@ -227,7 +226,7 @@ public class FSActions {
             } else {
                 if (action.getFilters().getSort().getRating() != null) {
                     for (int i = 0; i < movies.size() - 1; ++i) {
-                        for (int j = i+1; j < movies.size() ; ++j) {
+                        for (int j = i + 1; j < movies.size(); ++j) {
                             if (action.getFilters().getSort().getRating().equals("increasing")) {
                                 if (movies.get(i).getRating() > movies.get(j).getRating()) {
                                     Collections.swap(movies, i, j);
@@ -246,18 +245,25 @@ public class FSActions {
         return  true;
     }
 
-    public static Boolean buyTokens(ActionInput action) {
+    /**
+     * Changes the balance and current tokens of the user.
+     * @param action the current action
+     * @return true if the operation was successful else false
+     */
+    public static Boolean buyTokens(final ActionInput action) {
         FileSystem instance = FileSystem.getInstance();
         UserInput currentUser = instance.getCurrentUser();
         Page current = instance.getCurrent();
 
-        if (!current.getName().equals(FSConstants.upgradesPage)) {
+        if (!current.getName().equals(FSConstants.UPGRADES_PAGE)) {
             return false;
         }
 
         int count = Integer.parseInt(action.getCount());
         currentUser.getCredentials().setBalance(
-                Integer.toString(Integer.parseInt(currentUser.getCredentials().getBalance()) - count)
+                Integer.toString(Integer.parseInt(
+                        currentUser.getCredentials().getBalance()
+                ) - count)
         );
 
         currentUser.setTokensCount(
@@ -267,11 +273,15 @@ public class FSActions {
         return true;
     }
 
+    /**
+     * Change the account type of the user.
+     * @return true if the operation was successful else false
+     */
     public static Boolean buyPremiumAccount() {
         FileSystem instance = FileSystem.getInstance();
         Page current = instance.getCurrent();
 
-        if (!current.getName().equals(FSConstants.upgradesPage)) {
+        if (!current.getName().equals(FSConstants.UPGRADES_PAGE)) {
             return false;
         }
 
@@ -291,11 +301,17 @@ public class FSActions {
         return true;
     }
 
-    public static Boolean purchaseMovie(MovieInput movie) {
+    /**
+     * Changes the purchase movies list and the current tokens
+     * of the user.
+     * @param movie the movie to buy
+     * @return true if the operation was successful else false
+     */
+    public static Boolean purchaseMovie(final MovieInput movie) {
         FileSystem instance = FileSystem.getInstance();
         Page current = instance.getCurrent();
         UserInput currentUser = instance.getCurrentUser();
-        if (!current.getName().equals(FSConstants.seeDetailsPage)) {
+        if (!current.getName().equals(FSConstants.SEE_DETAILS_PAGE)) {
             return false;
         }
         boolean purchasable = false;
@@ -333,12 +349,17 @@ public class FSActions {
         return true;
     }
 
-    public static Boolean watchMovie(MovieInput movie) {
+    /**
+     * Changes the watched movies list of the user.
+     * @param movie the mobie to watch
+     * @return true if the operation was successful else false
+     */
+    public static Boolean watchMovie(final MovieInput movie) {
         FileSystem instance = FileSystem.getInstance();
         Page current = instance.getCurrent();
         UserInput currentUser = instance.getCurrentUser();
 
-        if (!current.getName().equals(FSConstants.seeDetailsPage)) {
+        if (!current.getName().equals(FSConstants.SEE_DETAILS_PAGE)) {
             return false;
         }
 
@@ -360,12 +381,17 @@ public class FSActions {
         return true;
     }
 
-    public static Boolean likeMovie(MovieInput movie) {
+    /**
+     * Changes the liked movies list of the user.
+     * @param movie the movie to like
+     * @return true if the operation was successful else false
+     */
+    public static Boolean likeMovie(final MovieInput movie) {
         FileSystem instance = FileSystem.getInstance();
         Page current = instance.getCurrent();
         UserInput currentUser = instance.getCurrentUser();
 
-        if (!current.getName().equals(FSConstants.seeDetailsPage)) {
+        if (!current.getName().equals(FSConstants.SEE_DETAILS_PAGE)) {
             return false;
         }
 
@@ -388,12 +414,20 @@ public class FSActions {
         return true;
     }
 
-    public static Boolean rateMovie(MovieInput movie, ActionInput action) {
+    /**
+     * Changes the rated movies list of the user
+     * and the rate of the movie
+     * @param movie the movie to rate
+     * @param action the current action
+     * @return true if the operation was successful else false
+     */
+    public static Boolean rateMovie(final MovieInput movie,
+                                    final ActionInput action) {
         FileSystem instance = FileSystem.getInstance();
         Page current = instance.getCurrent();
         UserInput currentUser = instance.getCurrentUser();
 
-        if (!current.getName().equals(FSConstants.seeDetailsPage)) {
+        if (!current.getName().equals(FSConstants.SEE_DETAILS_PAGE)) {
             return false;
         }
 

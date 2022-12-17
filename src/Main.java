@@ -1,5 +1,4 @@
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -10,91 +9,91 @@ import filesystem.FileSystem;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
 
-public class Main {
+public final class Main {
 
-    private Main() {}
+    private Main() { }
 
-    public static String path = "checker/resources/in/";
-    public static String outPath = "";
-    public static String test = "basic_2.json";
-    public static String outName = "results.json";
+    /**
+     * Main function: Reads from input files and writes the expected
+     * output in the given output path.
+     * @param args first position contains the input file, the second contains the output file
+     * @throws IOException if file cannot open
+     */
+    public static void main(final String[] args) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
 
-    public static void main(String[] args) throws IOException {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
-//
-//        ArrayNode output = new ObjectMapper().createArrayNode();
-//        Input input = objectMapper.readValue(new File(args[0]), Input.class);
-//        mainLoop(input, output);
-//
-//        objectWriter.writeValue(new File(args[1]), output);
-        File directory = new File(path);
-        for (File file : Objects.requireNonNull(directory.listFiles())) {
-            String fileName = file.getName();
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-            Input input = objectMapper.readValue(new File(path + fileName), Input.class);
-            ArrayNode output = new ObjectMapper().createArrayNode();
+        ArrayNode output = new ObjectMapper().createArrayNode();
+        Input input = objectMapper.readValue(new File(args[0]), Input.class);
+        mainLoop(input, output);
 
-            mainLoop(input, output);
-            ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
-            objectWriter.writeValue(new File(outPath + fileName), output);
-        }
+        objectWriter.writeValue(new File(args[1]), output);
     }
 
-    private static void mainLoop(Input input, ArrayNode output) {
+    /**
+     * Loops through all the actions and executes the corresponding command.
+     * @param input an input class with all the data
+     * @param output where the output messages are going
+     */
+    private static void mainLoop(final Input input, final ArrayNode output) {
         FileSystem.init();
         List<UserInput> users = input.getUsers();
         FileSystem instance = FileSystem.getInstance();
         instance.setAllMovies(input.getMovies());
         instance.initCurrentMovies(null);
+        boolean ret;
         for (ActionInput action: input.getActions()) {
             String type = action.getType();
             boolean moviesChangeable = true;
-            boolean ret = false;
             boolean display = false;
             OutputFactory.OutputType outputType; UserInput currentUser = null;
             List<MovieInput> currentMovieList = instance.getCurrentMovies();
             String error = null;
 
-            if (type.equals(FSConstants.changePage)) {
+            if (type.equals(FSConstants.CHANGE_PAGE)) {
                 ret = FSActions.changePage(action);
                 if (!ret) {
                     display = true;
                 }
             } else {
                 switch (action.getFeature()) {
-                    case FSConstants.loginPermission -> ret = FSActions.login(users, action);
-                    case FSConstants.registerPermission -> ret = FSActions.register(users, action);
-                    case FSConstants.searchPermission -> {
+                    case FSConstants.LOGIN_PERMISSION -> ret = FSActions.login(users, action);
+                    case FSConstants.REGISTER_PERMISSION -> ret = FSActions.register(users, action);
+                    case FSConstants.SEARCH_PERMISSION -> {
                         ret = FSActions.search(currentMovieList,
-                                MovieInput.getUserMovies(instance.getCurrentUser(), input.getMovies()),
+                                MovieInput.getUserMovies(instance.getCurrentUser(),
+                                                        input.getMovies()),
                                 action);
                         instance.setCurrentMovies(currentMovieList);
                         display = true;
                         moviesChangeable = false;
                     }
-                    case FSConstants.filterPermission -> {
+                    case FSConstants.FILTER_PERMISSION -> {
                         ret = FSActions.filter(currentMovieList,
-                                MovieInput.getUserMovies(instance.getCurrentUser(), input.getMovies()),
+                                MovieInput.getUserMovies(instance.getCurrentUser(),
+                                                        input.getMovies()),
                                 action);
                         instance.setCurrentMovies(currentMovieList);
                         moviesChangeable = false;
                     }
-                    case FSConstants.tokensPermission -> ret = FSActions.buyTokens(action);
-                    case FSConstants.premiumPermission -> ret = FSActions.buyPremiumAccount();
-                    case FSConstants.purchasePermission -> ret = FSActions.purchaseMovie(instance.getCurrentMovie());
-                    case FSConstants.watchPermission -> ret  = FSActions.watchMovie(instance.getCurrentMovie());
-                    case FSConstants.likePermission -> ret = FSActions.likeMovie(instance.getCurrentMovie());
-                    case FSConstants.ratePermission -> ret = FSActions.rateMovie(instance.getCurrentMovie(), action);
+                    case FSConstants.TOKENS_PERMISSION ->
+                            ret = FSActions.buyTokens(action);
+                    case FSConstants.PREMIUM_PERMISSION ->
+                            ret = FSActions.buyPremiumAccount();
+                    case FSConstants.PURCHASE_PERMISSION ->
+                            ret = FSActions.purchaseMovie(instance.getCurrentMovie());
+                    case FSConstants.WATCH_PERMISSION ->
+                            ret  = FSActions.watchMovie(instance.getCurrentMovie());
+                    case FSConstants.LIKE_PERMISSION ->
+                            ret = FSActions.likeMovie(instance.getCurrentMovie());
+                    case FSConstants.RATE_PERMISSION ->
+                            ret = FSActions.rateMovie(instance.getCurrentMovie(), action);
+                    default -> ret = false;
                 }
-                if (!ret || action.getFeature().equals(FSConstants.loginPermission)
-                    || action.getFeature().equals(FSConstants.registerPermission)) {
+                if (!ret || action.getFeature().equals(FSConstants.LOGIN_PERMISSION)
+                    || action.getFeature().equals(FSConstants.REGISTER_PERMISSION)) {
                     display = true;
                 }
             }
@@ -107,12 +106,14 @@ public class Main {
                     outputType = OutputFactory.OutputType.StandardOutput;
                 } else {
                     currentUser = instance.getCurrentUser();
-                    if (instance.getCurrent().getName().equals("movies")) {
+                    if (instance.getCurrent().getName()
+                            .equals(FSConstants.MOVIES_PAGE)) {
                         display = true;
                         outputType = OutputFactory.OutputType.MoviesOutput;
-                    } else if (instance.getCurrent().getName().equals("see details")) {
+                    } else if (instance.getCurrent().getName()
+                            .equals(FSConstants.SEE_DETAILS_PAGE)) {
                         if (instance.getCurrentMovie() == null) {
-                            error = "Error";
+                            error = FSConstants.ERROR;
                             outputType = OutputFactory.OutputType.StandardOutput;
                         } else {
                             outputType = OutputFactory.OutputType.MoviesOutput;
@@ -127,7 +128,11 @@ public class Main {
                 error = "Error";
             }
             if (display) {
-                output.add(OutputFactory.createOutput(outputType, error, instance.getCurrentMovies(), currentUser));
+                output.add(OutputFactory.createOutput(
+                        outputType,
+                        error,
+                        instance.getCurrentMovies(),
+                        currentUser));
             }
         }
     }

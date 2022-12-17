@@ -2,7 +2,7 @@ package fileio;
 
 import java.util.List;
 
-public class ContainInput {
+public final class ContainInput {
     private List<String> actors;
     private List<String> genre;
 
@@ -13,7 +13,7 @@ public class ContainInput {
         return actors;
     }
 
-    public void setActors(List<String> actors) {
+    public void setActors(final List<String> actors) {
         this.actors = actors;
     }
 
@@ -21,15 +21,8 @@ public class ContainInput {
         return genre;
     }
 
-    public void setGenre(List<String> genre) {
+    public void setGenre(final List<String> genre) {
         this.genre = genre;
     }
 
-    @Override
-    public String toString() {
-        return "ContainInput{" +
-                "actors=" + actors +
-                ", genre=" + genre +
-                '}';
-    }
 }

@@ -1,23 +1,24 @@
 package filesystem;
 
-public class FSConstants {
+public final class FSConstants {
     private FSConstants() {
 
     }
 
-    public static final String loginPermission = "login";
-    public static final String registerPermission = "register";
-    public static final String searchPermission = "search";
-    public static final String filterPermission = "filter";
-    public static final String purchasePermission = "purchase";
-    public static final String watchPermission = "watch";
-    public static final String likePermission = "like";
-    public static final String ratePermission = "rate";
-    public static final String premiumPermission = "buy premium account";
-    public static final String tokensPermission = "buy tokens";
-    public static final String logoutPage = "logout";
-    public static final String error = "Error";
-    public static final String changePage = "change page";
-    public static final String seeDetailsPage = "see details";
-    public static final String upgradesPage = "upgrades";
+    public static final String LOGIN_PERMISSION = "login";
+    public static final String REGISTER_PERMISSION = "register";
+    public static final String SEARCH_PERMISSION = "search";
+    public static final String FILTER_PERMISSION = "filter";
+    public static final String PURCHASE_PERMISSION = "purchase";
+    public static final String WATCH_PERMISSION = "watch";
+    public static final String LIKE_PERMISSION = "like";
+    public static final String RATE_PERMISSION = "rate";
+    public static final String PREMIUM_PERMISSION = "buy premium account";
+    public static final String TOKENS_PERMISSION = "buy tokens";
+    public static final String LOGOUT_PAGE = "logout";
+    public static final String ERROR = "Error";
+    public static final String CHANGE_PAGE = "change page";
+    public static final String SEE_DETAILS_PAGE = "see details";
+    public static final String UPGRADES_PAGE = "upgrades";
+    public static final String MOVIES_PAGE = "movies";
 }
