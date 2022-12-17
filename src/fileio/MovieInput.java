@@ -6,18 +6,19 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MovieInput {
-    String name;
-    String year;
-    Integer duration;
-    ArrayList<String> genres;
-    ArrayList<String> actors;
-    ArrayList<String> countriesBanned;
-
-    Integer numLikes = 0;
-    Double rating = 0.0;
-    Integer numRatings = 0;
+    private String name;
+    private String year;
+    private Integer duration;
+    private ArrayList<String> genres;
+    private ArrayList<String> actors;
+    private ArrayList<String> countriesBanned;
+    private List<Double> ratings = new ArrayList<>();
+    private Integer numLikes = 0;
+    private Double rating = 0.0;
+    private Integer numRatings = 0;
 
 
     public MovieInput(String name, String year, Integer duration, ArrayList<String> genres, ArrayList<String> actors, ArrayList<String> countriesBanned) {
@@ -104,6 +105,14 @@ public class MovieInput {
         this.numRatings = numRatings;
     }
 
+    public List<Double> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Double> ratings) {
+        this.ratings = ratings;
+    }
+
     public static List<MovieInput> getUserMovies(UserInput user, List<MovieInput> moviesList) {
         List<MovieInput> allowedMovies = new ArrayList<>();
 
@@ -162,5 +171,18 @@ public class MovieInput {
                 ", actors=" + actors +
                 ", countriesBanned=" + countriesBanned +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MovieInput that = (MovieInput) o;
+        return Objects.equals(name, that.name) && Objects.equals(year, that.year);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, year);
     }
 }

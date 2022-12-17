@@ -1,6 +1,11 @@
 package filesystem;
 
+import fileio.ActionInput;
+import fileio.MovieInput;
 import fileio.UserInput;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileSystem {
     private FileSystem() {
@@ -29,6 +34,7 @@ public class FileSystem {
         authMoviesPage.getChildren().add(authPage);
         authMoviesPage.getChildren().add(authMoviesSeeDetails);
         authMoviesPage.getChildren().add(authLogout);
+        authMoviesPage.getChildren().add(authMoviesPage);
         authMoviesPage.getPermissions().add(FSConstants.searchPermission);
         authMoviesPage.getPermissions().add(FSConstants.filterPermission);
 
@@ -36,6 +42,7 @@ public class FileSystem {
         authMoviesSeeDetails.getChildren().add(authMoviesPage);
         authMoviesSeeDetails.getChildren().add(authUpgradesPage);
         authMoviesSeeDetails.getChildren().add(authLogout);
+        authMoviesSeeDetails.getChildren().add(authMoviesSeeDetails);
         authMoviesSeeDetails.getPermissions().add(FSConstants.purchasePermission);
         authMoviesSeeDetails.getPermissions().add(FSConstants.watchPermission);
         authMoviesSeeDetails.getPermissions().add(FSConstants.likePermission);
@@ -44,6 +51,7 @@ public class FileSystem {
         authUpgradesPage.getChildren().add(authPage);
         authUpgradesPage.getChildren().add(authMoviesPage);
         authUpgradesPage.getChildren().add(authLogout);
+        authUpgradesPage.getChildren().add(authUpgradesPage);
         authUpgradesPage.getPermissions().add(FSConstants.premiumPermission);
         authUpgradesPage.getPermissions().add(FSConstants.tokensPermission);
 
@@ -52,10 +60,14 @@ public class FileSystem {
         current = unAuthPage;
     }
     private static FileSystem instance = null;
-    private Page unAuthPage;
-    private Page authPage;
+    private final Page unAuthPage;
+    private final Page authPage;
     private Page current;
     private UserInput currentUser = null;
+    private List<MovieInput> currentMovies = null;
+    private MovieInput currentMovie = null;
+    private  List<MovieInput> allMovies = null;
+    private boolean visited = false;
 
     public static FileSystem getInstance() {
         if (instance == null) {
@@ -86,5 +98,64 @@ public class FileSystem {
 
     public void setCurrentUser(UserInput currentUser) {
         this.currentUser = currentUser;
+    }
+
+    public List<MovieInput> getCurrentMovies() {
+        return currentMovies;
+    }
+
+    public void setCurrentMovies(List<MovieInput> currentMovies) {
+        this.currentMovies = currentMovies;
+    }
+
+    public MovieInput getCurrentMovie() {
+        return currentMovie;
+    }
+
+    public void setCurrentMovie(MovieInput currentMovie) {
+        this.currentMovie = currentMovie;
+    }
+
+    public List<MovieInput> getAllMovies() {
+        return allMovies;
+    }
+
+    public void setAllMovies(List<MovieInput> allMovies) {
+        this.allMovies = allMovies;
+    }
+
+    public Boolean initCurrentMovies(ActionInput action) {
+        if (!current.getName().equals(FSConstants.seeDetailsPage)) {
+            currentMovies = new ArrayList<>();
+        }
+
+        if (current.getName().equals("movies")) {
+            visited = true;
+            currentMovies = MovieInput.getUserMovies(currentUser, allMovies);
+        } else {
+            visited = false;
+        }
+
+        if (current.getName().equals(FSConstants.seeDetailsPage)) {
+            if (action.getMovie() != null) {
+                for (MovieInput movie : currentMovies) {
+                    if (movie.getName().equals(action.getMovie())) {
+                        currentMovie = movie;
+                        break;
+                    }
+                }
+            }
+            if (currentMovie != null) {
+                currentMovies.clear();
+                currentMovies.add(currentMovie);
+            }
+        } else {
+            currentMovie = null;
+        }
+        return true;
+    }
+
+    public static void init() {
+        instance = null;
     }
 }
