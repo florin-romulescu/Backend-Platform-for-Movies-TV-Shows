@@ -17,6 +17,7 @@ public final class UserInput {
     private List<MovieInput> watchedMovies = new ArrayList<>();
     private List<MovieInput> likedMovies = new ArrayList<>();
     private List<MovieInput> ratedMovies = new ArrayList<>();
+    private List<String> notifications = new ArrayList<>();
 
     public UserInput(final CredentialsInput credentials) {
         this.credentials = credentials;
@@ -81,6 +82,14 @@ public final class UserInput {
         this.ratedMovies = ratedMovies;
     }
 
+    public List<String> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<String> notifications) {
+        this.notifications = notifications;
+    }
+
     /**
      * Verify if this user has the given credentials
      * @param name name of the user
@@ -140,6 +149,13 @@ public final class UserInput {
             arr.add(movie.convertToObjectNode());
         }
         obj.put("ratedMovies", arr);
+
+        arr = new ObjectMapper().createArrayNode();
+        for (String notification: notifications) {
+            arr.add(notification);
+        }
+
+        obj.put("notifications", arr);
 
         return obj;
     }
