@@ -166,7 +166,7 @@ public final class FileSystem {
     /**
      * Set the instance null for reinitialisation.
      */
-    public static void init() {
+    public static void setInstanceNull() {
         instance = null;
     }
 }

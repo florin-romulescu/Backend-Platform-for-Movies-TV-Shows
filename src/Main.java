@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+
 public final class Main {
 
     private Main() { }
@@ -38,11 +39,13 @@ public final class Main {
      * @param output where the output messages are going
      */
     private static void mainLoop(final Input input, final ArrayNode output) {
-        FileSystem.init();
+        // Initialise the filesystem
+        FileSystem.setInstanceNull();
         List<UserInput> users = input.getUsers();
         FileSystem instance = FileSystem.getInstance();
         instance.setAllMovies(input.getMovies());
         instance.initCurrentMovies(null);
+        // -------------------------------- //
         boolean ret;
         for (ActionInput action: input.getActions()) {
             String type = action.getType();

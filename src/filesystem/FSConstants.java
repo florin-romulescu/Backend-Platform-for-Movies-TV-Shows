@@ -21,4 +21,5 @@ public final class FSConstants {
     public static final String SEE_DETAILS_PAGE = "see details";
     public static final String UPGRADES_PAGE = "upgrades";
     public static final String MOVIES_PAGE = "movies";
+    public static final String ON_PAGE = "on page";
 }
