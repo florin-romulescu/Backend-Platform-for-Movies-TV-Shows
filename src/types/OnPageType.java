@@ -1,8 +1,11 @@
-package filesystem.strategies;
+package types;
 
+import features.strategy.FeatureBuilder;
+import features.strategy.FeatureContext;
 import fileio.ActionInput;
 import fileio.MovieInput;
 import fileio.UserInput;
+import types.strategy.TypeStrategy;
 
 import java.util.List;
 

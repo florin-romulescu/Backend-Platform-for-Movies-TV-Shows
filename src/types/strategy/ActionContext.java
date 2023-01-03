@@ -1,12 +1,12 @@
-package filesystem.strategies;
+package types.strategy;
 
-import database.Database;
 import fileio.ActionInput;
 import fileio.MovieInput;
 import fileio.UserInput;
 import filesystem.FSConstants;
+import types.ChangePageType;
+import types.OnPageType;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 public class ActionContext {

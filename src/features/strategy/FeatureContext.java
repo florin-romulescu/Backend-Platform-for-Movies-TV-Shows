@@ -1,6 +1,15 @@
-package filesystem.strategies;
+package features.strategy;
 
 import database.Database;
+import features.*;
+import features.FilterFeature;
+import features.LikeFeature;
+import features.LogInFeature;
+import features.PremiumFeature;
+import features.RateFeature;
+import features.RegisterFeature;
+import features.TokensFeature;
+import features.WatchFeature;
 import fileio.ActionInput;
 import fileio.MovieInput;
 import fileio.UserInput;
@@ -30,7 +39,7 @@ public class FeatureContext{
             case FSConstants.FILTER_PERMISSION -> new FilterFeature(currentMovieList, movies, action);
             case FSConstants.TOKENS_PERMISSION -> new TokensFeature(action);
             case FSConstants.PREMIUM_PERMISSION -> new PremiumFeature();
-            case FSConstants.PURCHASE_PERMISSION -> new PurchaseFeature();
+            case FSConstants.PURCHASE_PERMISSION -> new features.PurchaseFeature();
             case FSConstants.WATCH_PERMISSION -> new WatchFeature();
             case FSConstants.LIKE_PERMISSION -> new LikeFeature();
             case FSConstants.RATE_PERMISSION -> new RateFeature(action);

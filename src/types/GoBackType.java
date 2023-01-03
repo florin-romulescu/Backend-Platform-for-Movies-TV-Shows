@@ -1,6 +1,7 @@
-package filesystem.strategies;
+package types;
 
 import filesystem.FileSystem;
+import types.strategy.TypeStrategy;
 
 public class GoBackType implements TypeStrategy {
 

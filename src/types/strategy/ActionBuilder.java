@@ -1,4 +1,4 @@
-package filesystem.strategies;
+package types.strategy;
 
 import fileio.ActionInput;
 import fileio.MovieInput;

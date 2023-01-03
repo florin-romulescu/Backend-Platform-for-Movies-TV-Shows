@@ -6,8 +6,8 @@ import database.Database;
 import fileio.*;
 import filesystem.FSConstants;
 import filesystem.FileSystem;
-import filesystem.strategies.ActionBuilder;
-import filesystem.strategies.ActionContext;
+import types.strategy.ActionBuilder;
+import types.strategy.ActionContext;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public final class Main {
 
-    private static String inPath = "checker/resources/in/basic_2.json";
+    private static String inPath = "checker/resources/in/basic_1.json";
     private static String outPath = "output.json";
 
     private Main() { }
