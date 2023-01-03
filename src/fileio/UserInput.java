@@ -155,7 +155,7 @@ public final class UserInput {
             arr.add(notification);
         }
 
-        obj.put("notifications", arr);
+//        obj.put("notifications", arr);
 
         return obj;
     }

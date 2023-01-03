@@ -1,5 +1,6 @@
 package filesystem.strategies;
 
+import database.Database;
 import fileio.ActionInput;
 import fileio.MovieInput;
 import fileio.UserInput;
@@ -38,7 +39,12 @@ public class FeatureContext{
     }
 
     public boolean action() {
-        return strategy.action();
+        boolean result =  strategy.action();
+        if (!result || action.getFeature().equals(FSConstants.LOGIN_PERMISSION)
+                || action.getFeature().equals(FSConstants.REGISTER_PERMISSION)) {
+            Database.getInstance().setDisplay(true);
+        }
+        return result;
     }
 
 }

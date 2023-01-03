@@ -2,17 +2,24 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import database.Database;
 import fileio.*;
 import filesystem.FSActions;
 import filesystem.FSConstants;
 import filesystem.FileSystem;
+import filesystem.strategies.ActionBuilder;
+import filesystem.strategies.ActionContext;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 
 public final class Main {
+
+    private static final String inPath = "checker/resources/in/basic_6.json";
+    private static final String outPath = "output.json";
 
     private Main() { }
 
@@ -38,103 +45,65 @@ public final class Main {
      * @param input an input class with all the data
      * @param output where the output messages are going
      */
-    private static void mainLoop(final Input input, final ArrayNode output) {
-        // Initialise the filesystem
-        FileSystem.setInstanceNull();
-        List<UserInput> users = input.getUsers();
-        FileSystem instance = FileSystem.getInstance();
-        instance.setAllMovies(input.getMovies());
-        instance.initCurrentMovies(null);
-        // -------------------------------- //
-        boolean ret;
-        for (ActionInput action: input.getActions()) {
-            String type = action.getType();
-            boolean moviesChangeable = true;
-            boolean display = false;
-            OutputFactory.OutputType outputType; UserInput currentUser = null;
-            List<MovieInput> currentMovieList = instance.getCurrentMovies();
+    public static void mainLoop(final Input input, final ArrayNode output) {
+        Database.setInstanceNull();
+        Database instance = Database.getInstance();
+        FileSystem fileSystem = instance.getFileSystem();
+        instance.setMovies(input.getMovies());
+        instance.setUsers(input.getUsers());
+        fileSystem.initCurrentMovies(null);
+
+        for (ActionInput action : input.getActions()) {
+            instance.setMoviesChangeable(true); instance.setDisplay(false);
+            List<MovieInput> currentMoviesList = fileSystem.getCurrentMovies();
+            OutputFactory.OutputType outputType;
+            UserInput currentUser = null;
             String error = null;
 
-            if (type.equals(FSConstants.CHANGE_PAGE)) {
-                ret = FSActions.changePage(action);
-                if (!ret) {
-                    display = true;
-                }
-            } else {
-                switch (action.getFeature()) {
-                    case FSConstants.LOGIN_PERMISSION -> ret = FSActions.login(users, action);
-                    case FSConstants.REGISTER_PERMISSION -> ret = FSActions.register(users, action);
-                    case FSConstants.SEARCH_PERMISSION -> {
-                        ret = FSActions.search(currentMovieList,
-                                MovieInput.getUserMovies(instance.getCurrentUser(),
-                                                        input.getMovies()),
-                                action);
-                        instance.setCurrentMovies(currentMovieList);
-                        display = true;
-                        moviesChangeable = false;
-                    }
-                    case FSConstants.FILTER_PERMISSION -> {
-                        ret = FSActions.filter(currentMovieList,
-                                MovieInput.getUserMovies(instance.getCurrentUser(),
-                                                        input.getMovies()),
-                                action);
-                        instance.setCurrentMovies(currentMovieList);
-                        moviesChangeable = false;
-                    }
-                    case FSConstants.TOKENS_PERMISSION ->
-                            ret = FSActions.buyTokens(action);
-                    case FSConstants.PREMIUM_PERMISSION ->
-                            ret = FSActions.buyPremiumAccount();
-                    case FSConstants.PURCHASE_PERMISSION ->
-                            ret = FSActions.purchaseMovie(instance.getCurrentMovie());
-                    case FSConstants.WATCH_PERMISSION ->
-                            ret  = FSActions.watchMovie(instance.getCurrentMovie());
-                    case FSConstants.LIKE_PERMISSION ->
-                            ret = FSActions.likeMovie(instance.getCurrentMovie());
-                    case FSConstants.RATE_PERMISSION ->
-                            ret = FSActions.rateMovie(instance.getCurrentMovie(), action);
-                    default -> ret = false;
-                }
-                if (!ret || action.getFeature().equals(FSConstants.LOGIN_PERMISSION)
-                    || action.getFeature().equals(FSConstants.REGISTER_PERMISSION)) {
-                    display = true;
-                }
-            }
-            if (moviesChangeable) {
-                instance.initCurrentMovies(action);
+            ActionContext actionContext = new ActionBuilder()
+                    .currentMovieList(currentMoviesList)
+                    .movies(instance.getMovies())
+                    .users(instance.getUsers())
+                    .action(action)
+                    .build();
+            actionContext.createStrategy();
+            boolean ret = actionContext.action();
+            if (instance.isMoviesChangeable()) {
+                fileSystem.initCurrentMovies(action);
             }
 
             if (ret) {
-                if (instance.getCurrentUser() == null) {
+                if (fileSystem.getCurrentUser() == null) {
                     outputType = OutputFactory.OutputType.StandardOutput;
                 } else {
-                    currentUser = instance.getCurrentUser();
-                    if (instance.getCurrent().getName()
+                    currentUser = fileSystem.getCurrentUser();
+                    if (fileSystem.getCurrent().getName()
                             .equals(FSConstants.MOVIES_PAGE)) {
-                        display = true;
+                        instance.setDisplay(true);
                         outputType = OutputFactory.OutputType.MoviesOutput;
-                    } else if (instance.getCurrent().getName()
+                    } else if (fileSystem.getCurrent().getName()
                             .equals(FSConstants.SEE_DETAILS_PAGE)) {
-                        if (instance.getCurrentMovie() == null) {
+                        if (fileSystem.getCurrentMovie() == null) {
                             error = FSConstants.ERROR;
                             outputType = OutputFactory.OutputType.StandardOutput;
                         } else {
                             outputType = OutputFactory.OutputType.MoviesOutput;
                         }
-                        display = true;
+                        instance.setDisplay(true);
                     } else {
                         outputType = OutputFactory.OutputType.UserLoggedInOutput;
                     }
                 }
             } else {
                 outputType = OutputFactory.OutputType.StandardOutput;
+                instance.setDisplay(true);
                 error = "Error";
             }
-            if (display) {
+            if (instance.isDisplay()) {
                 output.add(OutputFactory.createOutput(
                         outputType,
                         error,
-                        instance.getCurrentMovies(),
+                        fileSystem.getCurrentMovies(),
                         currentUser));
             }
         }

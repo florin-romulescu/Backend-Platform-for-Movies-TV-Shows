@@ -1,5 +1,6 @@
 package filesystem;
 
+import database.Database;
 import fileio.ActionInput;
 
 import fileio.MovieInput;
@@ -315,7 +316,7 @@ public final class FSActions {
             return false;
         }
         boolean purchasable = false;
-        for (MovieInput m: instance.getAllMovies()) {
+        for (MovieInput m: Database.getInstance().getMovies()) {
             if (m.equals(movie)) {
                 purchasable = true;
                 break;

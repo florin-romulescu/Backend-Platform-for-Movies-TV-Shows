@@ -1,5 +1,6 @@
 package filesystem.strategies;
 
+import database.Database;
 import fileio.ActionInput;
 import fileio.MovieInput;
 import filesystem.FSActions;
@@ -27,7 +28,7 @@ public class FilterFeature implements FeatureStrategy {
                         movies),
                 action);
         instance.setCurrentMovies(currentMovieList);
+        Database.getInstance().setMoviesChangeable(false);
         return result;
-        // TODO
     }
 }

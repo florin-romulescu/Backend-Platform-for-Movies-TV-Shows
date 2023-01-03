@@ -1,10 +1,12 @@
 package filesystem.strategies;
 
+import database.Database;
 import fileio.ActionInput;
 import fileio.MovieInput;
 import fileio.UserInput;
 import filesystem.FSConstants;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 public class ActionContext {
@@ -21,16 +23,14 @@ public class ActionContext {
         this.action = action;
     }
 
-    public ActionContext(ActionInput action) {
-        this.action = action;
-    }
-
     public void createStrategy() {
+
         strategy = switch (action.getType()) {
             case FSConstants.CHANGE_PAGE -> new ChangePageType(action);
             case FSConstants.ON_PAGE -> new OnPageType(currentMovieList, users, movies, action);
             default -> null;
         };
+
     }
 
     public boolean action() {

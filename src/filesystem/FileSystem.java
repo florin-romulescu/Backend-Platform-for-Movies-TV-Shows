@@ -1,5 +1,6 @@
 package filesystem;
 
+import database.Database;
 import fileio.ActionInput;
 import fileio.MovieInput;
 import fileio.UserInput;
@@ -140,7 +141,7 @@ public final class FileSystem {
 
         if (current.getName().equals("movies")) {
             visited = true;
-            currentMovies = MovieInput.getUserMovies(currentUser, allMovies);
+            currentMovies = MovieInput.getUserMovies(currentUser, Database.getInstance().getMovies());
         } else {
             visited = false;
         }
