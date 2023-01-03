@@ -7,6 +7,7 @@ import fileio.UserInput;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public final class FileSystem {
     private FileSystem() {
@@ -67,7 +68,7 @@ public final class FileSystem {
     private UserInput currentUser = null;
     private List<MovieInput> currentMovies = null;
     private MovieInput currentMovie = null;
-    private  List<MovieInput> allMovies = null;
+    private Stack<Page> stackList = new Stack<>();
     private boolean visited = false;
 
     /**
@@ -121,12 +122,12 @@ public final class FileSystem {
         this.currentMovie = currentMovie;
     }
 
-    public List<MovieInput> getAllMovies() {
-        return allMovies;
+    public Stack<Page> getStackList() {
+        return stackList;
     }
 
-    public void setAllMovies(final List<MovieInput> allMovies) {
-        this.allMovies = allMovies;
+    public void setStackList(Stack<Page> stackList) {
+        this.stackList = stackList;
     }
 
     /**

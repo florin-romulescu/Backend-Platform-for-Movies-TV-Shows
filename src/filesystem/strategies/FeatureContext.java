@@ -39,6 +39,9 @@ public class FeatureContext{
     }
 
     public boolean action() {
+        if (strategy == null) {
+            return false;
+        }
         boolean result =  strategy.action();
         if (!result || action.getFeature().equals(FSConstants.LOGIN_PERMISSION)
                 || action.getFeature().equals(FSConstants.REGISTER_PERMISSION)) {

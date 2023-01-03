@@ -30,6 +30,7 @@ public final class FSActions {
                 if (pageTitle.equals(FSConstants.LOGOUT_PAGE)) {
                     instance.setCurrent(instance.getUnAuthPage());
                     instance.setCurrentUser(null);
+                    instance.getStackList().clear();
                     return true;
                 } else if (pageTitle.equals(FSConstants.SEE_DETAILS_PAGE)) {
                     boolean found = false;
@@ -44,6 +45,7 @@ public final class FSActions {
                     }
                 }
                 instance.setCurrent(page);
+                instance.getStackList().push(page);
                 return true;
             }
         }
@@ -73,6 +75,7 @@ public final class FSActions {
                     action.getCredentials().getPassword())) {
                 instance.setCurrent(instance.getAuthPage());
                 instance.setCurrentUser(user);
+                instance.getStackList().clear();
                 return true;
             }
         }

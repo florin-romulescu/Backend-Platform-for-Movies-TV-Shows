@@ -24,16 +24,18 @@ public class ActionContext {
     }
 
     public void createStrategy() {
-
         strategy = switch (action.getType()) {
             case FSConstants.CHANGE_PAGE -> new ChangePageType(action);
             case FSConstants.ON_PAGE -> new OnPageType(currentMovieList, users, movies, action);
+            case FSConstants.GO_BACK -> null;
             default -> null;
         };
-
     }
 
     public boolean action() {
+        if (strategy == null) {
+            return false;
+        }
         return strategy.action();
     }
 

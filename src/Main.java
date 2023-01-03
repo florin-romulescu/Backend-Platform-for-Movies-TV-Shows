@@ -4,13 +4,11 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import database.Database;
 import fileio.*;
-import filesystem.FSActions;
 import filesystem.FSConstants;
 import filesystem.FileSystem;
 import filesystem.strategies.ActionBuilder;
 import filesystem.strategies.ActionContext;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -18,8 +16,8 @@ import java.util.List;
 
 public final class Main {
 
-    private static final String inPath = "checker/resources/in/basic_6.json";
-    private static final String outPath = "output.json";
+    private static String inPath = "checker/resources/in/basic_2.json";
+    private static String outPath = "output.json";
 
     private Main() { }
 
@@ -34,10 +32,14 @@ public final class Main {
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
 
         ArrayNode output = new ObjectMapper().createArrayNode();
-        Input input = objectMapper.readValue(new File(args[0]), Input.class);
+        if (args.length != 0) {
+            inPath = args[0];
+            outPath = args[1];
+        }
+        Input input = objectMapper.readValue(new File(inPath), Input.class);
         mainLoop(input, output);
 
-        objectWriter.writeValue(new File(args[1]), output);
+        objectWriter.writeValue(new File(outPath), output);
     }
 
     /**
