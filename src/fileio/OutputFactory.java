@@ -85,9 +85,33 @@ class MoviesOutput extends OutTest {
     }
 }
 
+class RecommendationOutput extends OutTest {
+
+    public RecommendationOutput(final UserInput currentUser) {
+        super.error = null;
+        super.currentUser = currentUser;
+        super.currentMovieList = null;
+    }
+
+    @Override
+    public ObjectNode convertToObjectNode() {
+        ObjectNode obj = new ObjectMapper().createObjectNode();
+        obj.put("error", (JsonNode) null);
+        ArrayNode arr = new ObjectMapper().createArrayNode();
+
+        obj.put("currentMoviesList", (JsonNode) null);
+        if (currentUser == null) {
+            obj.put("currentUser", (JsonNode) null);
+        } else {
+            obj.put("currentUser", currentUser.convertToObjectNode());
+        }
+        return obj;
+    }
+}
+
 public class OutputFactory {
     public enum OutputType {
-        StandardOutput, UserLoggedInOutput, MoviesOutput
+        StandardOutput, UserLoggedInOutput, MoviesOutput, RecommendationOutput
     }
 
     /**
@@ -108,6 +132,7 @@ public class OutputFactory {
                     new UserLoggedInOutput(error, currentUser).convertToObjectNode();
             case MoviesOutput ->
                     new MoviesOutput(error, currentMovieList, currentUser).convertToObjectNode();
+            case RecommendationOutput -> new RecommendationOutput(currentUser).convertToObjectNode();
         };
     }
 }

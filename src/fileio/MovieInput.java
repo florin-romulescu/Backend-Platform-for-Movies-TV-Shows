@@ -4,11 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-public final class MovieInput {
+public final class MovieInput implements Output {
     private String name;
     private String year;
     private Integer duration;
@@ -19,6 +17,8 @@ public final class MovieInput {
     private Integer numLikes = 0;
     private Double rating = 0.0;
     private Integer numRatings = 0;
+
+    private Map<String, Double> newRatings = new HashMap<>();
 
 
     public MovieInput(final String name,
@@ -118,6 +118,14 @@ public final class MovieInput {
         this.ratings = ratings;
     }
 
+    public Map<String, Double> getNewRatings() {
+        return newRatings;
+    }
+
+    public void setNewRatings(Map<String, Double> newRatings) {
+        this.newRatings = newRatings;
+    }
+
     /**
      * Generates a list with all the movies that this user can watch.
      * @param user the given user
@@ -171,26 +179,21 @@ public final class MovieInput {
         obj.put("numLikes", numLikes);
         obj.put("rating", rating);
         obj.put("numRatings", numRatings);
-        obj.put("year", Integer.parseInt(year));
+        obj.put("year", year);
 
         return obj;
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         MovieInput that = (MovieInput) o;
-        return Objects.equals(name, that.name)
-                && Objects.equals(year, that.year);
+        return Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, year);
+        return Objects.hash(name);
     }
 }

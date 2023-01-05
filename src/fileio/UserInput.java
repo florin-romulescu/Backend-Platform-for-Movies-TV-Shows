@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public final class UserInput {
+public final class UserInput implements Output {
     private static final int NUM_FREE_PREM_MOVIES = 15;
     private CredentialsInput credentials;
     private Integer tokensCount = 0;
@@ -17,7 +17,9 @@ public final class UserInput {
     private List<MovieInput> watchedMovies = new ArrayList<>();
     private List<MovieInput> likedMovies = new ArrayList<>();
     private List<MovieInput> ratedMovies = new ArrayList<>();
-    private List<String> notifications = new ArrayList<>();
+    private List<Notification> notifications = new ArrayList<>();
+
+    private final List<String> subscribedGenres = new ArrayList<>();
 
     public UserInput(final CredentialsInput credentials) {
         this.credentials = credentials;
@@ -82,12 +84,16 @@ public final class UserInput {
         this.ratedMovies = ratedMovies;
     }
 
-    public List<String> getNotifications() {
+    public List<Notification> getNotifications() {
         return notifications;
     }
 
-    public void setNotifications(List<String> notifications) {
+    public void setNotifications(List<Notification> notifications) {
         this.notifications = notifications;
+    }
+
+    public List<String> getSubscribedGenres() {
+        return subscribedGenres;
     }
 
     /**
@@ -151,8 +157,8 @@ public final class UserInput {
         obj.put("ratedMovies", arr);
 
         arr = new ObjectMapper().createArrayNode();
-        for (String notification: notifications) {
-            arr.add(notification);
+        for (Notification notification: notifications) {
+            arr.add(notification.convertToObjectNode());
         }
 
         obj.put("notifications", arr);
