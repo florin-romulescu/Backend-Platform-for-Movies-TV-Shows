@@ -11,6 +11,7 @@ public class FeatureBuilder {
     private List<UserInput> users;
     private List<MovieInput> movies;
     private ActionInput action;
+    private MovieInput movie;
 
     public FeatureBuilder currentMovieList(List<MovieInput> currentMovieList) {
         this.currentMovieList = currentMovieList;
@@ -32,7 +33,12 @@ public class FeatureBuilder {
         return this;
     }
 
+    public FeatureBuilder movie(MovieInput movie) {
+        this.movie = movie;
+        return this;
+    }
+
     public FeatureContext build() {
-        return new FeatureContext(currentMovieList, movies, users, action);
+        return new FeatureContext(currentMovieList, movies, users, action, movie);
     }
 }

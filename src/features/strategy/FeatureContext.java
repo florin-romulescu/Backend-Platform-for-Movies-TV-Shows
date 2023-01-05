@@ -18,13 +18,17 @@ import filesystem.FSConstants;
 import java.util.List;
 
 public class FeatureContext{
-    FeatureStrategy strategy;
-    private List<MovieInput> currentMovieList;
-    private List<MovieInput> movies;
-    private List<UserInput> users;
-    private ActionInput action;
+    private FeatureStrategy strategy;
+    private final List<MovieInput> currentMovieList;
+    private final List<MovieInput> movies;
+    private final List<UserInput> users;
+    private final ActionInput action;
 
-    FeatureContext(List<MovieInput> currentMovieList, List<MovieInput> movies, List<UserInput> users, ActionInput action) {
+    FeatureContext(final List<MovieInput> currentMovieList,
+                   final List<MovieInput> movies,
+                   final List<UserInput> users,
+                   final ActionInput action,
+                   final MovieInput movie) {
         this.currentMovieList = currentMovieList;
         this.movies = movies;
         this.users = users;
@@ -43,6 +47,10 @@ public class FeatureContext{
             case FSConstants.WATCH_PERMISSION -> new WatchFeature();
             case FSConstants.LIKE_PERMISSION -> new LikeFeature();
             case FSConstants.RATE_PERMISSION -> new RateFeature(action);
+            case FSConstants.DATABASE_ADD -> new DatabaseAddFeature(action);
+            case FSConstants.DATABASE_DELETE -> new DatabaseDeleteFeature(action);
+            case FSConstants.RECOMMENDATION -> new RecommendationFeature();
+            case FSConstants.SUBSCRIBE -> new SubscribeFeature(action);
             default -> null;
         };
     }
