@@ -23,4 +23,9 @@ public final class FSConstants {
     public static final String MOVIES_PAGE = "movies";
     public static final String ON_PAGE = "on page";
     public static final String GO_BACK = "back";
+    public static final String SUBSCRIBE = "subscribe";
+    public static final String DATABASE = "database";
+    public static final String DATABASE_ADD = "add";
+    public static final String DATABASE_DELETE = "delete";
+    public static final String RECOMMENDATION = "recommendation";
 }
