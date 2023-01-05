@@ -10,6 +10,9 @@ public class GoBackType implements TypeStrategy {
         if (instance.getStackList().isEmpty()) {
             return false;
         }
+        if (instance.getCurrentUser() == null) {
+            return false;
+        }
         instance.setCurrent(instance.getStackList().pop());
         return true;
     }
