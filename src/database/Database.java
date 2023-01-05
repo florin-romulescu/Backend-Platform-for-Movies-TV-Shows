@@ -2,6 +2,7 @@ package database;
 
 import fileio.ActionInput;
 import fileio.MovieInput;
+import fileio.Notification;
 import fileio.UserInput;
 import filesystem.FSConstants;
 import filesystem.FileSystem;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
-    private final NotificationService notificationService;
+    private NotificationService notificationService;
     private static Database instance = null;
     private FileSystem fileSystem;
     private List<UserInput> users;
@@ -20,7 +21,6 @@ public class Database {
     private boolean moviesChangeable;
 
     private Database() {
-        notificationService = new NotificationService();
         FileSystem.setInstanceNull();
         fileSystem = FileSystem.getInstance();
         users = new ArrayList<>();
@@ -76,11 +76,37 @@ public class Database {
         instance = null;
     }
 
+    public void createNotificationService() {
+        notificationService = new NotificationService();
+    }
+
     public NotificationService getNotificationService() {
         return notificationService;
     }
 
-    public void newMovieNotifier(String msg) {
-        notificationService.notifyUsers(msg);
+    public void newMovieNotifier(Notification msg, String genre) {
+        notificationService.notifyUsers(msg, genre);
+    }
+
+    public void newMovieNotifier(Notification msg, MovieInput movie) {
+        notificationService.notifyUsers(msg, movie);
+    }
+
+    public MovieInput getMovie(String m) {
+        for (MovieInput movie: movies) {
+            if (m.equals(movie.getName())) {
+                return movie;
+            }
+        }
+        return null;
+    }
+
+    public UserInput getUser(String u) {
+        for (UserInput user: users) {
+            if (u.equals(user.getCredentials().getName())) {
+                return user;
+            }
+        }
+        return null;
     }
 }
