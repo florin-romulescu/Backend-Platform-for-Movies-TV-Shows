@@ -42,8 +42,10 @@ public class ChangePageType implements TypeStrategy {
                         return false;
                     }
                 }
+                if (instance.getCurrentUser() != null) {
+                    instance.getStackList().push(instance.getCurrent());
+                }
                 instance.setCurrent(page);
-                instance.getStackList().push(page);
                 return true;
             }
         }

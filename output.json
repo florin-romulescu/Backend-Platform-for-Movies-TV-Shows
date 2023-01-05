@@ -1,48 +1,140 @@
 [ {
-  "error" : "Error",
-  "currentMoviesList" : [ ],
-  "currentUser" : null
-}, {
   "error" : null,
   "currentMoviesList" : [ ],
   "currentUser" : {
     "credentials" : {
-      "name" : "Ramsi",
-      "password" : "numiplacevelea",
-      "accountType" : "standard",
-      "country" : "Ireland",
-      "balance" : "300"
-    },
-    "tokensCount" : 0,
-    "numFreePremiumMovies" : 15,
-    "purchasedMovies" : [ ],
-    "watchedMovies" : [ ],
-    "likedMovies" : [ ],
-    "ratedMovies" : [ ],
-    "notifications" : [ ]
-  }
-}, {
-  "error" : "Error",
-  "currentMoviesList" : [ ],
-  "currentUser" : null
-}, {
-  "error" : "Error",
-  "currentMoviesList" : [ ],
-  "currentUser" : null
-}, {
-  "error" : "Error",
-  "currentMoviesList" : [ ],
-  "currentUser" : null
-}, {
-  "error" : null,
-  "currentMoviesList" : [ ],
-  "currentUser" : {
-    "credentials" : {
-      "name" : "Eduard",
-      "password" : "secret",
-      "accountType" : "standard",
+      "name" : "Florin Romulescu",
+      "password" : "1234",
+      "accountType" : "premium",
       "country" : "Romania",
-      "balance" : "50"
+      "balance" : "10000"
+    },
+    "tokensCount" : 0,
+    "numFreePremiumMovies" : 15,
+    "purchasedMovies" : [ ],
+    "watchedMovies" : [ ],
+    "likedMovies" : [ ],
+    "ratedMovies" : [ ],
+    "notifications" : [ ]
+  }
+}, {
+  "error" : null,
+  "currentMoviesList" : [ {
+    "name" : "Lord, Save Us from Your Followers",
+    "duration" : 125,
+    "actors" : [ "Camey Ingold", "Grace Volleth", "Jermaine D'Ruel", "Anselma Saxelby" ],
+    "genres" : [ "Comedy", "Western", "Mystery" ],
+    "countriesBanned" : [ "Russia", "Saudi Arabia", "Zimbabwe" ],
+    "numLikes" : 0,
+    "rating" : 0.0,
+    "numRatings" : 0,
+    "year" : "1998"
+  }, {
+    "name" : "My Sassy Girl",
+    "duration" : 125,
+    "actors" : [ "Mabel MacAless", "Iggy MacUchadair", "Arni Harrow", "Reg Kelleher" ],
+    "genres" : [ "Comedy", "Mystery", "Fantasy" ],
+    "countriesBanned" : [ "Dominican Republic", "Indonesia", "Japan" ],
+    "numLikes" : 0,
+    "rating" : 0.0,
+    "numRatings" : 0,
+    "year" : "2005"
+  }, {
+    "name" : "Take the Money and Run",
+    "duration" : 134,
+    "actors" : [ "Hailey Evequot", "Fenelia Maryott", "Gloriane Haughton", "Evvie Asbery" ],
+    "genres" : [ "Thriller", "Western", "Mystery" ],
+    "countriesBanned" : [ "Indonesia", "China", "India" ],
+    "numLikes" : 0,
+    "rating" : 0.0,
+    "numRatings" : 0,
+    "year" : "2006"
+  } ],
+  "currentUser" : {
+    "credentials" : {
+      "name" : "Florin Romulescu",
+      "password" : "1234",
+      "accountType" : "premium",
+      "country" : "Romania",
+      "balance" : "10000"
+    },
+    "tokensCount" : 0,
+    "numFreePremiumMovies" : 15,
+    "purchasedMovies" : [ ],
+    "watchedMovies" : [ ],
+    "likedMovies" : [ ],
+    "ratedMovies" : [ ],
+    "notifications" : [ ]
+  }
+}, {
+  "error" : null,
+  "currentMoviesList" : [ {
+    "name" : "Lord, Save Us from Your Followers",
+    "duration" : 125,
+    "actors" : [ "Camey Ingold", "Grace Volleth", "Jermaine D'Ruel", "Anselma Saxelby" ],
+    "genres" : [ "Comedy", "Western", "Mystery" ],
+    "countriesBanned" : [ "Russia", "Saudi Arabia", "Zimbabwe" ],
+    "numLikes" : 0,
+    "rating" : 0.0,
+    "numRatings" : 0,
+    "year" : "1998"
+  } ],
+  "currentUser" : {
+    "credentials" : {
+      "name" : "Florin Romulescu",
+      "password" : "1234",
+      "accountType" : "premium",
+      "country" : "Romania",
+      "balance" : "10000"
+    },
+    "tokensCount" : 0,
+    "numFreePremiumMovies" : 15,
+    "purchasedMovies" : [ ],
+    "watchedMovies" : [ ],
+    "likedMovies" : [ ],
+    "ratedMovies" : [ ],
+    "notifications" : [ ]
+  }
+}, {
+  "error" : null,
+  "currentMoviesList" : [ {
+    "name" : "Lord, Save Us from Your Followers",
+    "duration" : 125,
+    "actors" : [ "Camey Ingold", "Grace Volleth", "Jermaine D'Ruel", "Anselma Saxelby" ],
+    "genres" : [ "Comedy", "Western", "Mystery" ],
+    "countriesBanned" : [ "Russia", "Saudi Arabia", "Zimbabwe" ],
+    "numLikes" : 0,
+    "rating" : 0.0,
+    "numRatings" : 0,
+    "year" : "1998"
+  }, {
+    "name" : "My Sassy Girl",
+    "duration" : 125,
+    "actors" : [ "Mabel MacAless", "Iggy MacUchadair", "Arni Harrow", "Reg Kelleher" ],
+    "genres" : [ "Comedy", "Mystery", "Fantasy" ],
+    "countriesBanned" : [ "Dominican Republic", "Indonesia", "Japan" ],
+    "numLikes" : 0,
+    "rating" : 0.0,
+    "numRatings" : 0,
+    "year" : "2005"
+  }, {
+    "name" : "Take the Money and Run",
+    "duration" : 134,
+    "actors" : [ "Hailey Evequot", "Fenelia Maryott", "Gloriane Haughton", "Evvie Asbery" ],
+    "genres" : [ "Thriller", "Western", "Mystery" ],
+    "countriesBanned" : [ "Indonesia", "China", "India" ],
+    "numLikes" : 0,
+    "rating" : 0.0,
+    "numRatings" : 0,
+    "year" : "2006"
+  } ],
+  "currentUser" : {
+    "credentials" : {
+      "name" : "Florin Romulescu",
+      "password" : "1234",
+      "accountType" : "premium",
+      "country" : "Romania",
+      "balance" : "10000"
     },
     "tokensCount" : 0,
     "numFreePremiumMovies" : 15,
@@ -56,4 +148,26 @@
   "error" : "Error",
   "currentMoviesList" : [ ],
   "currentUser" : null
+}, {
+  "error" : null,
+  "currentMoviesList" : null,
+  "currentUser" : {
+    "credentials" : {
+      "name" : "Florin Romulescu",
+      "password" : "1234",
+      "accountType" : "premium",
+      "country" : "Romania",
+      "balance" : "10000"
+    },
+    "tokensCount" : 0,
+    "numFreePremiumMovies" : 15,
+    "purchasedMovies" : [ ],
+    "watchedMovies" : [ ],
+    "likedMovies" : [ ],
+    "ratedMovies" : [ ],
+    "notifications" : [ {
+      "movieName" : "No recommendation",
+      "message" : "Recommendation"
+    } ]
+  }
 } ]

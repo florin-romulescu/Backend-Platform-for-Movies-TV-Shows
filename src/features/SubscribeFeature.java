@@ -1,18 +1,19 @@
-package types;
+package features;
 
 import database.Database;
 import database.NotificationService;
 import database.UserListener;
+import features.strategy.FeatureStrategy;
 import fileio.ActionInput;
 import fileio.UserInput;
 import filesystem.FileSystem;
 import types.strategy.TypeStrategy;
 
 
-public class SubscribeType implements TypeStrategy {
+public class SubscribeFeature implements FeatureStrategy {
     ActionInput action;
 
-    public SubscribeType(ActionInput action) {
+    public SubscribeFeature(ActionInput action) {
         this.action = action;
     }
 

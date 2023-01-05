@@ -1,0 +1,123 @@
+{
+  "users": [
+    {
+      "credentials": {
+        "name": "Eduard",
+        "password": "secret",
+        "accountType": "premium",
+        "country": "India",
+        "balance": "50"
+      }
+    },
+    {
+      "credentials": {
+        "name": "Mihail",
+        "password": "discret",
+        "accountType": "premium",
+        "country": "China",
+        "balance": "1337"
+      }
+    }
+    ],
+  "movies": [
+    {
+      "name": "Lord, Save Us from Your Followers",
+      "year": 1998,
+      "duration": 125,
+      "genres": [
+        "Comedy",
+        "Western",
+        "Mystery"
+      ],
+      "countriesBanned": [
+        "Russia",
+        "Saudi Arabia",
+        "Zimbabwe"
+      ],
+      "actors": [
+        "Camey Ingold",
+        "Grace Volleth",
+        "Jermaine D'Ruel",
+        "Anselma Saxelby"
+      ]
+    },
+    {
+      "name": "My Sassy Girl",
+      "year": 2005,
+      "duration": 125,
+      "genres": [
+        "Comedy",
+        "Mystery",
+        "Fantasy"
+      ],
+      "countriesBanned": [
+        "Dominican Republic",
+        "Indonesia",
+        "Japan"
+      ],
+      "actors": [
+        "Mabel MacAless",
+        "Iggy MacUchadair",
+        "Arni Harrow",
+        "Reg Kelleher"
+      ]
+    },
+    {
+      "name": "Take the Money and Run",
+      "year": 2006,
+      "duration": 134,
+      "genres": [
+        "Thriller",
+        "Western",
+        "Mystery"
+      ],
+      "countriesBanned": [
+        "Indonesia",
+        "China",
+        "India"
+      ],
+      "actors": [
+        "Hailey Evequot",
+        "Fenelia Maryott",
+        "Gloriane Haughton",
+        "Evvie Asbery"
+      ]
+    }
+    ],
+  "actions": [
+    {
+      "type": "change page",
+      "page": "register"
+    },
+    {
+      "type": "on page",
+      "page": "register",
+      "feature": "register",
+      "credentials": {
+        "name": "Florin Romulescu",
+        "password": "1234",
+        "accountType": "premium",
+        "country": "Romania",
+        "balance": "10000"
+      }
+    },
+    {
+      "type": "change page",
+      "page": "movies"
+    },
+    {
+      "type": "change page",
+      "page": "see details",
+      "movie": "Lord, Save Us from Your Followers"
+    },
+    {
+      "type": "back"
+    },
+    {
+      "type": "back"
+    },
+    {
+      "type": "back"
+    }
+  ]
+}

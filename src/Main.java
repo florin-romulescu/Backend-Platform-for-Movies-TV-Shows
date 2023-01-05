@@ -16,9 +16,9 @@ import java.util.List;
 
 public final class Main {
 
-    private static String inPath = "checker/resources/in/basic_1.json";
+    private static String inPath = "test.json";
     private static String outPath = "output.json";
-
+    // TODO test 8 - out 35
     private Main() { }
 
     /**
@@ -32,6 +32,7 @@ public final class Main {
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
 
         ArrayNode output = new ObjectMapper().createArrayNode();
+        // This if statement is for testing purposes.
         if (args.length != 0) {
             inPath = args[0];
             outPath = args[1];
@@ -50,6 +51,7 @@ public final class Main {
     public static void mainLoop(final Input input, final ArrayNode output) {
         Database.setInstanceNull();
         Database instance = Database.getInstance();
+        instance.createNotificationService();
         FileSystem fileSystem = instance.getFileSystem();
         instance.setMovies(input.getMovies());
         instance.setUsers(input.getUsers());
@@ -70,21 +72,30 @@ public final class Main {
                     .build();
             actionContext.createStrategy();
             boolean ret = actionContext.action();
+
             if (instance.isMoviesChangeable()) {
                 fileSystem.initCurrentMovies(action);
             }
+            if (action.getType().equals("database") && ret) {
+                continue;
+            }
+            if (ret && action.getType().equals(FSConstants.ON_PAGE)) {
+                if (action.getFeature().equals(FSConstants.SUBSCRIBE)) {
+                    continue;
+                }
+            }
 
-            if (ret) {
-                if (fileSystem.getCurrentUser() == null) {
+            if (ret) { // if there is no error
+                if (fileSystem.getCurrentUser() == null) { // if there is no user logged in
                     outputType = OutputFactory.OutputType.StandardOutput;
-                } else {
+                } else { // if a user is logged in
                     currentUser = fileSystem.getCurrentUser();
                     if (fileSystem.getCurrent().getName()
-                            .equals(FSConstants.MOVIES_PAGE)) {
+                            .equals(FSConstants.MOVIES_PAGE)) { // if the current page is 'movies'
                         instance.setDisplay(true);
                         outputType = OutputFactory.OutputType.MoviesOutput;
                     } else if (fileSystem.getCurrent().getName()
-                            .equals(FSConstants.SEE_DETAILS_PAGE)) {
+                            .equals(FSConstants.SEE_DETAILS_PAGE)) { // if the current page is 'see details'
                         if (fileSystem.getCurrentMovie() == null) {
                             error = FSConstants.ERROR;
                             outputType = OutputFactory.OutputType.StandardOutput;
@@ -96,7 +107,7 @@ public final class Main {
                         outputType = OutputFactory.OutputType.UserLoggedInOutput;
                     }
                 }
-            } else {
+            } else { // if there is an error
                 outputType = OutputFactory.OutputType.StandardOutput;
                 instance.setDisplay(true);
                 error = "Error";
@@ -108,6 +119,23 @@ public final class Main {
                         fileSystem.getCurrentMovies(),
                         currentUser));
             }
+        }
+        ActionInput recommendationAction = new ActionInput();
+        recommendationAction.setType(FSConstants.RECOMMENDATION);
+        recommendationAction.setFeature(FSConstants.RECOMMENDATION);
+
+        ActionContext actionContext = new ActionBuilder()
+                .action(recommendationAction)
+                .build();
+        actionContext.createStrategy();
+        boolean ret = actionContext.action();
+        if (ret) {
+            output.add(OutputFactory.createOutput(
+                    OutputFactory.OutputType.RecommendationOutput,
+                    null,
+                    null,
+                    fileSystem.getCurrentUser()
+            ));
         }
     }
 }

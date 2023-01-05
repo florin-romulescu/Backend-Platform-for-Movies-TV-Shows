@@ -47,6 +47,7 @@ public class RegisterFeature implements FeatureStrategy {
 
         instance.setCurrent(instance.getAuthPage());
         instance.setCurrentUser(user);
+        instance.getStackList().clear();
         return true;
     }
 
