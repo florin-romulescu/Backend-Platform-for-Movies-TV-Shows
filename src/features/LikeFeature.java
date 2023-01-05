@@ -36,6 +36,10 @@ public class LikeFeature implements FeatureStrategy {
             return false;
         }
 
+        if (currentUser.getLikedMovies().contains(movie)) {
+            return true;
+        }
+
         movie.setNumLikes(movie.getNumLikes() + 1);
         currentUser.getLikedMovies().add(movie);
 

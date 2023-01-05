@@ -42,18 +42,33 @@ public class RateFeature implements FeatureStrategy {
         if (!watched) {
             return false;
         }
-        double rating = action.getRate();
-        movie.getRatings().add(rating);
-        movie.setNumRatings(
-                movie.getNumRatings() + 1
-        );
 
+        double rating = action.getRate();
+//        movie.getRatings().add(rating);
+//        movie.setNumRatings(
+//                movie.getNumRatings() + 1
+//        );
+//
+//        double sum = 0;
+//        for (double rate: movie.getRatings()) {
+//            sum += rate;
+//        }
+//        movie.setRating(sum / movie.getRatings().size());
+//
+//        if (currentUser.getRatedMovies().contains(movie)) {
+//            return true;
+//        }
         double sum = 0;
-        for (double rate: movie.getRatings()) {
+        movie.getNewRatings().put(currentUser.getCredentials().getName(), rating);
+        for (double rate: movie.getNewRatings().values()) {
             sum += rate;
         }
-        movie.setRating(sum / movie.getRatings().size());
-        currentUser.getRatedMovies().add(movie);
+        movie.setRating(sum / movie.getNewRatings().size());
+        movie.setNumRatings(movie.getNewRatings().size());
+
+        if (!currentUser.getRatedMovies().contains(movie)) {
+            currentUser.getRatedMovies().add(movie);
+        }
 
         return true;
     }

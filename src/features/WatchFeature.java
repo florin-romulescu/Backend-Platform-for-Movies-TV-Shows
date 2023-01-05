@@ -36,6 +36,10 @@ public class WatchFeature implements FeatureStrategy {
             return false;
         }
 
+        if (currentUser.getWatchedMovies().contains(movie)) {
+            return true;
+        }
+
         currentUser.getWatchedMovies().add(movie);
 
         return true;

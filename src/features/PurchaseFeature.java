@@ -31,6 +31,10 @@ public class PurchaseFeature implements FeatureStrategy {
             }
         }
 
+        if (currentUser.getPurchasedMovies().contains(movie)) {
+            return false;
+        }
+
         if (!purchasable) {
             return false;
         }
