@@ -3,16 +3,17 @@
 
 # Proiect: POO - TV.
 
-## Etapa 1.
-
 ### Cuprins:
     1.Descrirere problemă
     2.Structură
     3.Implementare
-        3.1.FileSystem
-        3.2.FSActions
-        3.3.Main
-        3.4.Alte clase
+        3.1.Database
+        3.2.FileSystem
+        3.3.Types
+        3.4.Features
+        3.5.OutputFactory
+        3.6.Main
+        3.7.Alte clase
     4.Design patterns
     5.Ce am învățat din tema aceasta?
 
@@ -39,11 +40,7 @@ Outputul problemei a fost scris într-un obiect `ArrayNode` creat cu ajutorul me
         Main.java -> fișierul cu funcția main
         fileio/ -> pachet cu clasele de input și output
             ActionInput.java
-            ContainInput.java
-            CredentialsInput.java
-            FilterInput.java
             Input.java
-            MovieInput.java
             OutputFactory.java
                 MoviesOutput
                 OutputFactory
@@ -51,18 +48,76 @@ Outputul problemei a fost scris într-un obiect `ArrayNode` creat cu ajutorul me
                 StandardOutput
                 UserLoggedInOutput
             SortInput.java
-            UserInput.java
+            [...]
         filesystem/ -> pachet cu clasele care acționează asupra sistemului de fișiere
             FileSystem.java
-            FSActions.java
             FSConstants.java
             Page.java
+        features/ -> pachet cu toate clasele care implementeaza un feature
+            strategy/ -> pachet cu clasele care implementeaza un design pattern strategy
+                FeatureBuilder
+                FeatureContext
+                FeatureStrategy
+            DataBaseAddFeature
+            DataBaseDeleteFeature
+            [...]
+        type/ -> pachet cu toate clasele care implementeaza un tip de feature
+            strategy/ pachet cu clasele care implementeaza un design pattern strategy
+                ActionBuilder
+                ActionContext
+                TypeStrategy
+            ChagePageType
+            DataBaseType
+            [...]
+        database/ -> pachet cu clasa DataBase plus 2 clase care ajuta la implementarea unui design pattern observer
+            Database
+            NotificationService
+            UserListener
 
 
 ### **3.Implementare**
 
+#### *3.1 Database*
+Pentru a memora toate datele despre filme, utilizatori și starea outputului
+am creat clasa `Database`, în care am utilizat un design pattern singleton, deoarece
+ne dorim ca aceasta să nu fie reinițializată pe parcursul execuției. \
+Când trecem la testul următor setăm instanța clasei cu null pentru a fi
+reinițializată.
 
-#### *3.1. FileSystem*
+```Java
+public final class Database {
+    private NotificationService notificationService;
+    private static Database instance = null;
+    private final FileSystem fileSystem;
+    private List<UserInput> users;
+    private List<MovieInput> movies;
+    private boolean display;
+    private boolean moviesChangeable;
+
+    private Database() {
+        FileSystem.setInstanceNull();
+        fileSystem = FileSystem.getInstance();
+        users = new ArrayList<>();
+        movies = new ArrayList<>();
+        display = false;
+        moviesChangeable = true;
+    }
+    /* ... */
+}
+```
+
+Pentru a notifica utilizatorul atunci când se produc schimbări în baza de date
+(se adaugă / șterge un film) am implementat un design pattern `Observer`.
+Print metoda `newMovieNotifier` apelăm metoda din atributul `notificationService`
+care apoi pentru fiecare `listener` va apela metoda `update`. Aici vom actualiza
+notificările utilizatorului curent. \
+
+Clasa `UserListener` reprezintă un tip de film la care cel puțin un utilizator
+s-a abonat. Aceasta este creată la folosirea funcționalității `subscribe` și este
+adăugată în lista `listeners` din atributul `notificationService`.
+
+
+#### *3.2 FileSystem*
 Pentru crearea sistemului de fișiere am creat o clasă `FileSystem` în care am folosit
 un design pattern de tip `singleton` pentru a menține instanța clasei pe tot parcursul
 testului.
@@ -92,42 +147,90 @@ public final class FileSystem {
 Tot prin această clasă vom ține minte utilizatorul curent, filmele pe care le poate vedea,
 filmul pe care l-a accesat și toate filmele existente pe platformă.
 
-#### *3.2. FSActions*
-În clasa `FSActions` avem metode statice pentru fiecare acțiune pe care un utilizator
-o poate executa. Acestea vor întoarce o valoare `Boolean` în funcție de succesul
-execuției.
+#### 3.3 Types
+Pentru a face mai lizibil codul, dar și pentru a face mai ușoară implementarea
+de tipuri noi am folosit un design pattern `Strategy`. Astfel am creat o clasă
+`ActionContext` care prin metoda `createStrategy()` îmi inițializează câmpul
+`strategy` cu un obiect `TypeStrategy` care implementează metoda `action()`.
+Această metodă va executa funcționalitatea corespunzătoare și îmi va întoarce
+dacă operația a fost realizată cu succes (true/false). \
+Deoarece clasa `ActionContext` are foarte multe câmpuri opționale, am creat
+o clasă `ActionBuilder` care implementează un design pattern `Builder`.
+Restul claselor vor implementa interfața `TypeStrategy` cu funcționalitatea
+lor respectivă.
 
-Exemplu:
+#### 3.4 Features
+
+Similar cu ce am zis la subpunctul `3.3` vom folosi un design pattern `Strategy`
+pentru implementarea claselor din pachetul `features`. \
+- `ActionContext` implementează design patternul `strategy`.
+- `ActionBuilder` construiește un obiect `ActionContext`.
+- `FeatureStrategy` o interfață care conține o metodă action.
+- Restul claselor implementează interfața cu funcționalitatea lor respectivă.
+
+#### 3.5 OutputFactory
+Deoarece avem mai multe tipuri de output am implementat un design pattern `Factory`
+care îmi va genera un output specific în funcție de parametrul pe care îl primește.
+
 ```Java
-    public static Boolean changePage(final ActionInput action) {...}
+public static ObjectNode createOutput(final OutputType type,
+                                      final String error,
+                                      final List<MovieInput> currentMovieList,
+                                      final UserInput currentUser) {
+    return switch (type) {
+        case StandardOutput -> new StandardOutput(error).convertToObjectNode();
+        case UserLoggedInOutput ->
+                new UserLoggedInOutput(error, currentUser).convertToObjectNode();
+        case MoviesOutput ->
+                new MoviesOutput(error, currentMovieList, currentUser).convertToObjectNode();
+        case RecommendationOutput ->
+                new RecommendationOutput(currentUser).convertToObjectNode();
+    };
+}
 ```
 
-#### *3.3 Main*
+Toate celelalte clase moștenesc o clasă abstractă `OutTest`.
+
+#### *3.6 Main*
 
 Funcția `mainLoop` iterează prin fiecare acțiune și creează un output specific.
-Pentru determinarea metodei din clasa `FSActions` pe care vrem să o folosim, se
-folosește un switch case. După switch case și executarea metodei, se va determina
-un output specific, în funcție de rezultatul operației, pagina pe care ne aflăm și
-operația executată. La final, în funcție de variabila locală `display` se scrie
-în output.
+Pentru determinarea acțiunii specifice vom crea un obiect de tip `ActionContext`,
+vom crea o strategie și o vom apela. Codul arată așa:
 
-#### *3.4 Alte clase*
-Clasa `FSConstants` a fost folosită pentru stocarea constantelor. \
-Clasa `Page` ține informații despre o pagină din sistemul de fișiere. \
-Toate clasele din pachetul `fileio` (cu excepția lui `OutputFactory`) sunt folosite
+```Java
+ActionContext actionContext = new ActionBuilder()
+                    .currentMovieList(currentMoviesList)
+                    .movies(instance.getMovies())
+                    .users(instance.getUsers())
+                    .action(action)
+                    .build();
+actionContext.createStrategy();
+boolean ret = actionContext.action();
+```
+
+După vom determina tipul de output printr-un control flow și vom adăuga în
+obiectul `output` rezultatul dacă este necesar. La final vom genera recomandările
+pentru utilizatorul premium.
+
+#### *3.7 Alte clase*
+- Clasa `FSConstants` a fost folosită pentru stocarea constantelor.
+- Clasa `Page` ține informații despre o pagină din sistemul de fișiere.
+- Toate clasele din pachetul `fileio` (cu excepția lui `OutputFactory`) sunt folosite
 pentru stocarea inputului.
+- Clasele din pachetul `types` sunt folosite pentru implementarea funcționalităților
+primite ca input în atributul `action.type`
+- Clasele din pachetul `features` sunt folosite pentru implementarea funcționalităților
+primite ca input în atributul `action.feature`
 
 ### **4.Design Patterns**
-Am folosit un design singleton asupra clasei `FileSystem` pentru a nu se pierde
-referința către sistemul de fișiere. Când se trece la un nou test aceasta este setată
-la `null` pentru a fi recreată. \
-De asemenea, am folosit un design factory asupra clasei `OutputFactory`, deoarece
-erau necesare mai multe tipuri de outputuri pe parcursul rulării, iar un design 
-factory face implementarea și adăugarea de alte outputuri mult mai ușoară.
+- *Singleton* : L-am folosit în clasele `Database` și `FileSystem`
+- *Factory* : L-am folosit în fișierul `OutputFactory.java`
+- *Builder*: L-am folosit în clasele `ActionBuilder` și `FeatureBuilder`
+- *Strategy*: L-am folosit în clasele din pachetele `features` și `types`
+- *Observer*: L-am folosit în clasele din pachetul `database`
 
-### **5.Ce am învățat din tema aceasta?**
-* Să analizez o problemă pentru a vedea ce clase, designuri ar putea fi implementate
-* Să implementez diferite design patternuri
-* Să îmi structurez mai bine pachetele astfel încât să îmi fie mai ușor să navighez prin sursă
-* Să scriu java docuri care mă pot ajuta în identificarea funcționalității unei funcții (am uitat de mai multe ori ce făcusem acum câteva zile ((= )
-* Codul din `mainloop` arată ca o farfurie de spaghete, se putea lucra mai mult acolo
+### **5. Ce am învățat din tema aceasta?**
+- Să utilizez multiple design patternuri
+- Să scriu cod ușor modificabil
+- Să îmi structurez mai bin funcționalitățile
+- Să analizez o problemă + să îmi creez un plan de implementare
