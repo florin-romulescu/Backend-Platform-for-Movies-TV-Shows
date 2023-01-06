@@ -13,12 +13,10 @@ public final class MovieInput implements Output {
     private ArrayList<String> genres;
     private ArrayList<String> actors;
     private ArrayList<String> countriesBanned;
-    private List<Double> ratings = new ArrayList<>();
     private Integer numLikes = 0;
     private Double rating = 0.0;
     private Integer numRatings = 0;
-
-    private Map<String, Double> newRatings = new HashMap<>();
+    private Map<String, Double> ratings = new HashMap<>();
 
 
     public MovieInput(final String name,
@@ -110,20 +108,12 @@ public final class MovieInput implements Output {
         this.numRatings = numRatings;
     }
 
-    public List<Double> getRatings() {
+    public Map<String, Double> getRatings() {
         return ratings;
     }
 
-    public void setRatings(final List<Double> ratings) {
+    public void setRatings(final Map<String, Double> ratings) {
         this.ratings = ratings;
-    }
-
-    public Map<String, Double> getNewRatings() {
-        return newRatings;
-    }
-
-    public void setNewRatings(Map<String, Double> newRatings) {
-        this.newRatings = newRatings;
     }
 
     /**
@@ -185,9 +175,13 @@ public final class MovieInput implements Output {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         MovieInput that = (MovieInput) o;
         return Objects.equals(name, that.name);
     }

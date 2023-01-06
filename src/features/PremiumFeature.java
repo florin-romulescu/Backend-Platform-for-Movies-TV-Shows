@@ -6,8 +6,8 @@ import filesystem.FileSystem;
 import filesystem.Page;
 import features.strategy.FeatureStrategy;
 
-public class PremiumFeature implements FeatureStrategy {
-
+public final class PremiumFeature implements FeatureStrategy {
+    private final int count = 10;
     /**
      * Change the account type of the user.
      * @return true if the operation was successful else false
@@ -25,8 +25,7 @@ public class PremiumFeature implements FeatureStrategy {
         if (currentUser.getCredentials().getAccountType().equals("premium")) {
             return false;
         }
-        int count = 10;
-        // TODO change tokens count not balance
+
         currentUser.setTokensCount(
                 currentUser.getTokensCount() - count
         );

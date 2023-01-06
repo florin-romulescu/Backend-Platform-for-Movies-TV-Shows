@@ -1,6 +1,5 @@
 package types.strategy;
 
-import features.SubscribeFeature;
 import fileio.ActionInput;
 import fileio.MovieInput;
 import fileio.UserInput;
@@ -9,7 +8,7 @@ import types.*;
 
 import java.util.List;
 
-public class ActionContext {
+public final class ActionContext {
     private TypeStrategy strategy;
     private final List<MovieInput> currentMovieList;
     private final List<UserInput> users;
@@ -26,6 +25,13 @@ public class ActionContext {
         this.action = action;
     }
 
+    /**
+     * Sets the strategy attribute with the
+     * corresponding TypeStrategy object by comparing
+     * the action.type attribute with the corresponding
+     * type from FSConstants. Strategy is set to null
+     * if the corresponding failed.
+     */
     public void createStrategy() {
         strategy = switch (action.getType()) {
             case FSConstants.CHANGE_PAGE -> new ChangePageType(action);
@@ -37,6 +43,12 @@ public class ActionContext {
         };
     }
 
+    /**
+     * Calls the strategy.action method for
+     * the corresponding type.
+     * @return true if the operation was successful
+     * else false
+     */
     public boolean action() {
         if (strategy == null) {
             return false;

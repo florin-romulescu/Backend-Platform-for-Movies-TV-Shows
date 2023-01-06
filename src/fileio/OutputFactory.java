@@ -87,7 +87,7 @@ class MoviesOutput extends OutTest {
 
 class RecommendationOutput extends OutTest {
 
-    public RecommendationOutput(final UserInput currentUser) {
+    RecommendationOutput(final UserInput currentUser) {
         super.error = null;
         super.currentUser = currentUser;
         super.currentMovieList = null;
@@ -109,10 +109,12 @@ class RecommendationOutput extends OutTest {
     }
 }
 
-public class OutputFactory {
+public final class OutputFactory {
     public enum OutputType {
         StandardOutput, UserLoggedInOutput, MoviesOutput, RecommendationOutput
     }
+
+    private OutputFactory() { }
 
     /**
      * Creates a specific output based on its type.
@@ -132,7 +134,8 @@ public class OutputFactory {
                     new UserLoggedInOutput(error, currentUser).convertToObjectNode();
             case MoviesOutput ->
                     new MoviesOutput(error, currentMovieList, currentUser).convertToObjectNode();
-            case RecommendationOutput -> new RecommendationOutput(currentUser).convertToObjectNode();
+            case RecommendationOutput ->
+                    new RecommendationOutput(currentUser).convertToObjectNode();
         };
     }
 }

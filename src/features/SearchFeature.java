@@ -10,13 +10,15 @@ import features.strategy.FeatureStrategy;
 
 import java.util.List;
 
-public class SearchFeature implements FeatureStrategy {
-    final private List<MovieInput> currentMovieList;
+public final class SearchFeature implements FeatureStrategy {
+    private final List<MovieInput> currentMovieList;
 
-    final private List<MovieInput> movies;
-    final private ActionInput action;
+    private final List<MovieInput> movies;
+    private final ActionInput action;
 
-    public SearchFeature(List<MovieInput> currentMovieList, List<MovieInput> movies, ActionInput action) {
+    public SearchFeature(final List<MovieInput> currentMovieList,
+                         final List<MovieInput> movies,
+                         final ActionInput action) {
         this.currentMovieList = currentMovieList;
         this.movies = movies;
         this.action = action;

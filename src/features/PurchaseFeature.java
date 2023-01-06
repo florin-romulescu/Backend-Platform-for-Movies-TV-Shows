@@ -8,7 +8,7 @@ import filesystem.FileSystem;
 import filesystem.Page;
 import features.strategy.FeatureStrategy;
 
-public class PurchaseFeature implements FeatureStrategy {
+public final class PurchaseFeature implements FeatureStrategy {
 
     /**
      * Changes the purchase movies list and the current tokens

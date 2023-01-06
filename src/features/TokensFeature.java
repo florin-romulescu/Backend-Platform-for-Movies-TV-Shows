@@ -7,10 +7,10 @@ import filesystem.FileSystem;
 import filesystem.Page;
 import features.strategy.FeatureStrategy;
 
-public class TokensFeature implements FeatureStrategy {
-    final private ActionInput action;
+public final class TokensFeature implements FeatureStrategy {
+    private final ActionInput action;
 
-    public TokensFeature(ActionInput action) {
+    public TokensFeature(final ActionInput action) {
         this.action = action;
     }
 

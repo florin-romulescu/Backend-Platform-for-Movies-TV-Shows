@@ -6,12 +6,11 @@ import fileio.ActionInput;
 import fileio.MovieInput;
 import fileio.Notification;
 import fileio.UserInput;
-import filesystem.FSConstants;
 
-public class DatabaseDeleteFeature  implements FeatureStrategy {
+public final class DatabaseDeleteFeature  implements FeatureStrategy {
     private final ActionInput action;
 
-    public DatabaseDeleteFeature(ActionInput action) {
+    public DatabaseDeleteFeature(final ActionInput action) {
         this.action = action;
     }
 

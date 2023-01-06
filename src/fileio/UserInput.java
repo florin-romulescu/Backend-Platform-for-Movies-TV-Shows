@@ -88,7 +88,7 @@ public final class UserInput implements Output {
         return notifications;
     }
 
-    public void setNotifications(List<Notification> notifications) {
+    public void setNotifications(final List<Notification> notifications) {
         this.notifications = notifications;
     }
 

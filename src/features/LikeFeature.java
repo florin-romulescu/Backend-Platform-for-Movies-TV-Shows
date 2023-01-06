@@ -7,7 +7,7 @@ import filesystem.FileSystem;
 import filesystem.Page;
 import features.strategy.FeatureStrategy;
 
-public class LikeFeature implements FeatureStrategy {
+public final class LikeFeature implements FeatureStrategy {
 
     /**
      * Changes the liked movies list of the user.

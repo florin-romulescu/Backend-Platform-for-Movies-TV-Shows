@@ -7,7 +7,7 @@ import filesystem.FileSystem;
 import filesystem.Page;
 import features.strategy.FeatureStrategy;
 
-public class WatchFeature implements FeatureStrategy {
+public final class WatchFeature implements FeatureStrategy {
 
     /**
      * Changes the watched movies list of the user.

@@ -18,7 +18,6 @@ public final class Main {
 
     private static String inPath = "test.json";
     private static String outPath = "output.json";
-    // TODO test 8 - out 35
     private Main() { }
 
     /**
@@ -85,17 +84,21 @@ public final class Main {
                 }
             }
 
-            if (ret) { // if there is no error
-                if (fileSystem.getCurrentUser() == null) { // if there is no user logged in
+            if (ret) {
+                // if there is no error
+                if (fileSystem.getCurrentUser() == null) {
+                    // if there is no user logged in
                     outputType = OutputFactory.OutputType.StandardOutput;
                 } else { // if a user is logged in
                     currentUser = fileSystem.getCurrentUser();
                     if (fileSystem.getCurrent().getName()
-                            .equals(FSConstants.MOVIES_PAGE)) { // if the current page is 'movies'
+                            .equals(FSConstants.MOVIES_PAGE)) {
+                        // if the current page is 'movies'
                         instance.setDisplay(true);
                         outputType = OutputFactory.OutputType.MoviesOutput;
                     } else if (fileSystem.getCurrent().getName()
-                            .equals(FSConstants.SEE_DETAILS_PAGE)) { // if the current page is 'see details'
+                            .equals(FSConstants.SEE_DETAILS_PAGE)) {
+                        // if the current page is 'see details'
                         if (fileSystem.getCurrentMovie() == null) {
                             error = FSConstants.ERROR;
                             outputType = OutputFactory.OutputType.StandardOutput;
@@ -107,7 +110,8 @@ public final class Main {
                         outputType = OutputFactory.OutputType.UserLoggedInOutput;
                     }
                 }
-            } else { // if there is an error
+            } else {
+                // if there is an error
                 outputType = OutputFactory.OutputType.StandardOutput;
                 instance.setDisplay(true);
                 error = "Error";

@@ -12,13 +12,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class FilterFeature implements FeatureStrategy {
-    final private List<MovieInput> currentMovieList;
+public final class FilterFeature implements FeatureStrategy {
+    private final List<MovieInput> currentMovieList;
 
-    final private List<MovieInput> movies;
-    final private ActionInput action;
+    private final List<MovieInput> movies;
+    private final ActionInput action;
 
-    public FilterFeature(List<MovieInput> currentMovieList, List<MovieInput> movies, ActionInput action) {
+    public FilterFeature(final List<MovieInput> currentMovieList,
+                         final List<MovieInput> movies,
+                         final ActionInput action) {
         this.currentMovieList = currentMovieList;
         this.movies = movies;
         this.action = action;

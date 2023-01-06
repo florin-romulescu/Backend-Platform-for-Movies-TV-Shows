@@ -1,20 +1,16 @@
 package database;
 
-import fileio.ActionInput;
 import fileio.MovieInput;
 import fileio.Notification;
 import fileio.UserInput;
-import filesystem.FSConstants;
 import filesystem.FileSystem;
-import filesystem.Page;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class Database {
+public final class Database {
     private NotificationService notificationService;
     private static Database instance = null;
-    private FileSystem fileSystem;
+    private final FileSystem fileSystem;
     private List<UserInput> users;
     private List<MovieInput> movies;
     private boolean display;
@@ -33,7 +29,7 @@ public class Database {
         return users;
     }
 
-    public void setUsers(List<UserInput> users) {
+    public void setUsers(final List<UserInput> users) {
         this.users = users;
     }
 
@@ -41,7 +37,7 @@ public class Database {
         return movies;
     }
 
-    public void setMovies(List<MovieInput> movies) {
+    public void setMovies(final List<MovieInput> movies) {
         this.movies = movies;
     }
 
@@ -53,7 +49,7 @@ public class Database {
         return display;
     }
 
-    public void setDisplay(boolean display) {
+    public void setDisplay(final boolean display) {
         this.display = display;
     }
 
@@ -61,10 +57,15 @@ public class Database {
         return moviesChangeable;
     }
 
-    public void setMoviesChangeable(boolean moviesChangeable) {
+    public void setMoviesChangeable(final boolean moviesChangeable) {
         this.moviesChangeable = moviesChangeable;
     }
 
+    /**
+     * Get the instance of the class. This instance
+     * is unique since the class uses a singleton pattern.
+     * @return the instance
+     */
     public static Database getInstance() {
         if (instance == null) {
             instance = new Database();
@@ -72,10 +73,18 @@ public class Database {
         return instance;
     }
 
+    /**
+     * Set the instance null for reinitialisation
+     * purposes.
+     */
     public static void setInstanceNull() {
         instance = null;
     }
 
+    /**
+     * Initialise the notificationService attribute
+     * with a new object.
+     */
     public void createNotificationService() {
         notificationService = new NotificationService();
     }
@@ -84,15 +93,36 @@ public class Database {
         return notificationService;
     }
 
-    public void newMovieNotifier(Notification msg, String genre) {
+    /**
+     * Calls the notificationService.notifyUsers method
+     * to send a notification to the users that are subscribed
+     * to the given genre.
+     * @param msg the message attribute of the notification
+     * @param genre the movieName attribute of the notification
+     */
+    public void newMovieNotifier(final Notification msg,
+                                 final String genre) {
         notificationService.notifyUsers(msg, genre);
     }
 
-    public void newMovieNotifier(Notification msg, MovieInput movie) {
+    /**
+     * Calls the notificationService.notifyUsers method
+     * to send a notification to all users.
+     * @param msg the message attribute of the notification
+     * @param movie the movieName attribute of the notification
+     */
+    public void newMovieNotifier(final Notification msg,
+                                 final MovieInput movie) {
         notificationService.notifyUsers(msg, movie);
     }
 
-    public MovieInput getMovie(String m) {
+    /**
+     * This method returns a MovieInput object
+     * that has the given title.
+     * @param m the title of the movie
+     * @return a MovieInput object
+     */
+    public MovieInput getMovie(final String m) {
         for (MovieInput movie: movies) {
             if (m.equals(movie.getName())) {
                 return movie;
@@ -101,7 +131,13 @@ public class Database {
         return null;
     }
 
-    public UserInput getUser(String u) {
+    /**
+     * This method returns a UserInput object
+     * that has the given title.
+     * @param u the name of the user
+     * @return a MovieInput object
+     */
+    public UserInput getUser(final String u) {
         for (UserInput user: users) {
             if (u.equals(user.getCredentials().getName())) {
                 return user;

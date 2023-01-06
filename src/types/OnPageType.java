@@ -9,14 +9,17 @@ import types.strategy.TypeStrategy;
 
 import java.util.List;
 
-public class OnPageType implements TypeStrategy {
+public final class OnPageType implements TypeStrategy {
 
     private List<MovieInput> currentMovieList = null;
     private List<UserInput> users = null;
     private List<MovieInput> movies = null;
     private ActionInput action = null;
 
-    public OnPageType(List<MovieInput> currentMovieList, List<UserInput> users, List<MovieInput> movies, ActionInput action) {
+    public OnPageType(final List<MovieInput> currentMovieList,
+                      final List<UserInput> users,
+                      final List<MovieInput> movies,
+                      final ActionInput action) {
         this.currentMovieList = currentMovieList;
         this.users = users;
         this.movies = movies;

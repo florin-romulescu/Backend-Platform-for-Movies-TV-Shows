@@ -9,11 +9,12 @@ import features.strategy.FeatureStrategy;
 
 import java.util.List;
 
-public class RegisterFeature implements FeatureStrategy {
-    List<UserInput> users;
-    ActionInput action;
+public final class RegisterFeature implements FeatureStrategy {
+    private final List<UserInput> users;
+    private final ActionInput action;
 
-    public RegisterFeature(List<UserInput> users, ActionInput action) {
+    public RegisterFeature(final List<UserInput> users,
+                           final ActionInput action) {
         this.users = users;
         this.action = action;
     }

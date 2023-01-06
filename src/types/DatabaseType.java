@@ -4,12 +4,11 @@ import features.strategy.FeatureBuilder;
 import features.strategy.FeatureContext;
 import fileio.ActionInput;
 import types.strategy.TypeStrategy;
-import filesystem.FSConstants;
 
-public class DatabaseType implements TypeStrategy {
-    ActionInput action;
+public final class DatabaseType implements TypeStrategy {
+    private final ActionInput action;
 
-    public DatabaseType(ActionInput action) {
+    public DatabaseType(final ActionInput action) {
         this.action = action;
     }
 

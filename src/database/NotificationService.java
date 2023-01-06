@@ -6,7 +6,7 @@ import fileio.Notification;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationService {
+public final class NotificationService {
     private final List<UserListener> listeners;
     private final UserListener all;
 
@@ -16,11 +16,19 @@ public class NotificationService {
         all.setUsers(Database.getInstance().getUsers());
     }
 
-    public void subscribe(UserListener listener) {
+    /**
+     * Adds a new listener to the listeners list.
+     * @param listener the new added listener
+     */
+    public void subscribe(final UserListener listener) {
         listeners.add(listener);
     }
 
-    public void unsubscribe(UserListener listener) {
+    /**
+     * Removes a listener from the listeners list
+     * @param listener the removed listener
+     */
+    public void unsubscribe(final UserListener listener) {
         listeners.remove(listener);
     }
 
@@ -28,13 +36,26 @@ public class NotificationService {
         return listeners;
     }
 
-    public void notifyUsers(Notification msg, String genre) {
+    /**
+     * Loops through the listeners and calls
+     * the update method for each one.
+     * @param msg the message attribute of the notification
+     * @param genre the message attribute of the notification
+     */
+    public void notifyUsers(final Notification msg,
+                            final String genre) {
         for (UserListener listener: listeners) {
             listener.update(msg, genre);
         }
     }
 
-    public void notifyUsers(Notification msg, MovieInput movie) {
+    /**
+     * Calls the update method for all listener.
+     * @param msg the message attribute of the notification
+     * @param movie the movieTitle attribute of the notification
+     */
+    public void notifyUsers(final Notification msg,
+                            final MovieInput movie) {
         all.update(msg, movie);
     }
 }

@@ -7,13 +7,12 @@ import features.strategy.FeatureStrategy;
 import fileio.ActionInput;
 import fileio.UserInput;
 import filesystem.FileSystem;
-import types.strategy.TypeStrategy;
 
 
-public class SubscribeFeature implements FeatureStrategy {
-    ActionInput action;
+public final class SubscribeFeature implements FeatureStrategy {
+    private final ActionInput action;
 
-    public SubscribeFeature(ActionInput action) {
+    public SubscribeFeature(final ActionInput action) {
         this.action = action;
     }
 
@@ -28,7 +27,7 @@ public class SubscribeFeature implements FeatureStrategy {
             return false;
         }
         // Verify if the genre exists
-        if (! fileSystem.getCurrentMovie().getGenres().contains(action.getSubscribedGenre())) {
+        if (!fileSystem.getCurrentMovie().getGenres().contains(action.getSubscribedGenre())) {
             return false;
         }
 

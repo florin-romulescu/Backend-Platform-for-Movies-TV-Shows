@@ -17,7 +17,7 @@ import filesystem.FSConstants;
 
 import java.util.List;
 
-public class FeatureContext{
+public final class FeatureContext {
     private FeatureStrategy strategy;
     private final List<MovieInput> currentMovieList;
     private final List<MovieInput> movies;
@@ -35,12 +35,20 @@ public class FeatureContext{
         this.action = action;
     }
 
+    /**
+     * Sets the strategy attribute with the corresponding Feature
+     * by comparing the action.feature attribute with the features
+     * from FSConstants class. Strategy is set to null if there is
+     * no feature found.
+     */
     public void createStrategy() {
         strategy = switch (action.getFeature()) {
             case FSConstants.LOGIN_PERMISSION -> new LogInFeature(users, action);
             case FSConstants.REGISTER_PERMISSION -> new RegisterFeature(users, action);
-            case FSConstants.SEARCH_PERMISSION -> new SearchFeature(currentMovieList, movies, action);
-            case FSConstants.FILTER_PERMISSION -> new FilterFeature(currentMovieList, movies, action);
+            case FSConstants.SEARCH_PERMISSION ->
+                    new SearchFeature(currentMovieList, movies, action);
+            case FSConstants.FILTER_PERMISSION ->
+                    new FilterFeature(currentMovieList, movies, action);
             case FSConstants.TOKENS_PERMISSION -> new TokensFeature(action);
             case FSConstants.PREMIUM_PERMISSION -> new PremiumFeature();
             case FSConstants.PURCHASE_PERMISSION -> new features.PurchaseFeature();
@@ -55,6 +63,12 @@ public class FeatureContext{
         };
     }
 
+    /**
+     * Calls the strategy.action method if
+     * strategy is not null.
+     * @return true if the operation was successful
+     * else false
+     */
     public boolean action() {
         if (strategy == null) {
             return false;

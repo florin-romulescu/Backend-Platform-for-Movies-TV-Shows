@@ -8,10 +8,10 @@ import filesystem.FileSystem;
 import filesystem.Page;
 import features.strategy.FeatureStrategy;
 
-public class RateFeature implements FeatureStrategy {
+public final class RateFeature implements FeatureStrategy {
     private final ActionInput action;
 
-    public RateFeature(ActionInput action) {
+    public RateFeature(final ActionInput action) {
         this.action = action;
     }
 
@@ -44,27 +44,13 @@ public class RateFeature implements FeatureStrategy {
         }
 
         double rating = action.getRate();
-//        movie.getRatings().add(rating);
-//        movie.setNumRatings(
-//                movie.getNumRatings() + 1
-//        );
-//
-//        double sum = 0;
-//        for (double rate: movie.getRatings()) {
-//            sum += rate;
-//        }
-//        movie.setRating(sum / movie.getRatings().size());
-//
-//        if (currentUser.getRatedMovies().contains(movie)) {
-//            return true;
-//        }
         double sum = 0;
-        movie.getNewRatings().put(currentUser.getCredentials().getName(), rating);
-        for (double rate: movie.getNewRatings().values()) {
+        movie.getRatings().put(currentUser.getCredentials().getName(), rating);
+        for (double rate: movie.getRatings().values()) {
             sum += rate;
         }
-        movie.setRating(sum / movie.getNewRatings().size());
-        movie.setNumRatings(movie.getNewRatings().size());
+        movie.setRating(sum / movie.getRatings().size());
+        movie.setNumRatings(movie.getRatings().size());
 
         if (!currentUser.getRatedMovies().contains(movie)) {
             currentUser.getRatedMovies().add(movie);

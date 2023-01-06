@@ -6,8 +6,8 @@ import fileio.ActionInput;
 import fileio.MovieInput;
 import fileio.Notification;
 
-public class DatabaseAddFeature implements FeatureStrategy {
-    ActionInput action;
+public final class DatabaseAddFeature implements FeatureStrategy {
+    private final ActionInput action;
 
     public DatabaseAddFeature(final ActionInput action) {
         this.action = action;

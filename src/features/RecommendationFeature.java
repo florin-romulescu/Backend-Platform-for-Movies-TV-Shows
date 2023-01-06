@@ -7,12 +7,12 @@ import fileio.Notification;
 import fileio.UserInput;
 import filesystem.FileSystem;
 
-import javax.xml.crypto.Data;
 import java.util.*;
 
-public class RecommendationFeature implements FeatureStrategy {
+public final class RecommendationFeature implements FeatureStrategy {
 
-    private Map<String, Integer> generateLikedGenres(UserInput currentUser) {
+    private Map<String, Integer> generateLikedGenres(
+            final UserInput currentUser) {
         Map<String, Integer> genresMap = new HashMap<>();
         for (MovieInput movie: currentUser.getLikedMovies()) {
             for (String genre: movie.getGenres()) {
@@ -33,7 +33,7 @@ public class RecommendationFeature implements FeatureStrategy {
         List<MovieInput> movies = Database.getInstance().getMovies();
         Map<MovieInput, Integer> moviesMap = new HashMap<>();
 
-        movies.forEach(movie->moviesMap.put(movie, movie.getNumLikes()));
+        movies.forEach(movie -> moviesMap.put(movie, movie.getNumLikes()));
         return moviesMap;
     }
 
@@ -64,7 +64,8 @@ public class RecommendationFeature implements FeatureStrategy {
         List<Map.Entry<String, Integer>> genresList = new LinkedList<>(genresMap.entrySet());
         genresList.sort(new Comparator<Map.Entry<String, Integer>>() {
             @Override
-            public int compare(Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2) {
+            public int compare(final Map.Entry<String, Integer> e1,
+                               final Map.Entry<String, Integer> e2) {
                 if (e1.getValue().equals(e2.getValue())) {
                     return e1.getKey().compareTo(e2.getKey());
                 }
@@ -72,8 +73,8 @@ public class RecommendationFeature implements FeatureStrategy {
             }
         });
 
-        Map<String , Integer> topGenres = new LinkedHashMap<>();
-        genresList.forEach(entry->topGenres.put(entry.getKey(), entry.getValue()));
+        Map<String, Integer> topGenres = new LinkedHashMap<>();
+        genresList.forEach(entry -> topGenres.put(entry.getKey(), entry.getValue()));
 
         // Generate movies
         Map<MovieInput, Integer> moviesMap = generateLikedMovies();
@@ -82,7 +83,8 @@ public class RecommendationFeature implements FeatureStrategy {
         List<Map.Entry<MovieInput, Integer>> moviesList = new LinkedList<>(moviesMap.entrySet());
         moviesList.sort(new Comparator<Map.Entry<MovieInput, Integer>>() {
             @Override
-            public int compare(Map.Entry<MovieInput, Integer> e1, Map.Entry<MovieInput, Integer> e2) {
+            public int compare(final Map.Entry<MovieInput, Integer> e1,
+                               final Map.Entry<MovieInput, Integer> e2) {
                 if (e1.getValue().equals(e2.getValue())) {
                     return e1.getKey().getName().compareTo(e2.getKey().getName());
                 }
@@ -90,13 +92,13 @@ public class RecommendationFeature implements FeatureStrategy {
             }
         });
 
-        Map<MovieInput , Integer> topMovies = new LinkedHashMap<>();
-        moviesList.forEach(entry->topMovies.put(entry.getKey(), entry.getValue()));
+        Map<MovieInput, Integer> topMovies = new LinkedHashMap<>();
+        moviesList.forEach(entry -> topMovies.put(entry.getKey(), entry.getValue()));
 
         for (String genre: topGenres.keySet()) {
             for (MovieInput movie: topMovies.keySet()) {
                 if (movie.getGenres().contains(genre)) {
-                    if (! currentUser.getWatchedMovies().contains(movie)) {
+                    if (!currentUser.getWatchedMovies().contains(movie)) {
                         currentUser.getNotifications()
                                 .add(new Notification(movie.getName(), "Recommendation"));
                         return true;

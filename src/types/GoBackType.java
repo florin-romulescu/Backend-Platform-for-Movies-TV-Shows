@@ -3,9 +3,9 @@ package types;
 import filesystem.FileSystem;
 import types.strategy.TypeStrategy;
 
-public class GoBackType implements TypeStrategy {
+public final class GoBackType implements TypeStrategy {
 
-    private static boolean go_back() {
+    private static boolean goBack() {
         FileSystem instance = FileSystem.getInstance();
         if (instance.getStackList().isEmpty()) {
             return false;
@@ -19,6 +19,6 @@ public class GoBackType implements TypeStrategy {
 
     @Override
     public boolean action() {
-        return go_back();
+        return goBack();
     }
 }

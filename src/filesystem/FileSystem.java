@@ -126,7 +126,7 @@ public final class FileSystem {
         return stackList;
     }
 
-    public void setStackList(Stack<Page> stackList) {
+    public void setStackList(final Stack<Page> stackList) {
         this.stackList = stackList;
     }
 
@@ -142,7 +142,9 @@ public final class FileSystem {
 
         if (current.getName().equals("movies")) {
             visited = true;
-            currentMovies = MovieInput.getUserMovies(currentUser, Database.getInstance().getMovies());
+            currentMovies = MovieInput.getUserMovies(
+                    currentUser, Database.getInstance().getMovies()
+            );
         } else {
             visited = false;
         }

@@ -5,10 +5,10 @@ import features.strategy.FeatureContext;
 import fileio.ActionInput;
 import types.strategy.TypeStrategy;
 
-public class RecommendationType implements TypeStrategy {
+public final class RecommendationType implements TypeStrategy {
     private final ActionInput action;
 
-    public RecommendationType(ActionInput action) {
+    public RecommendationType(final ActionInput action) {
         this.action = action;
     }
 

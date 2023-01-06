@@ -7,10 +7,10 @@ import filesystem.FileSystem;
 import filesystem.Page;
 import types.strategy.TypeStrategy;
 
-public class ChangePageType implements TypeStrategy {
+public final class ChangePageType implements TypeStrategy {
     private final ActionInput action;
 
-    public ChangePageType(ActionInput action) {
+    public ChangePageType(final ActionInput action) {
         this.action = action;
     }
 
