@@ -1,6 +1,3 @@
-### Nume student: Romulescu Florin-Sorin
-### Grupa: 323CA
-
 # Proiect: POO - TV.
 
 ### Cuprins:
